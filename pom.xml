@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.olech2412</groupId>
-	<artifactId>db-vendo-client</artifactId>
+	<artifactId>db-vendo-wrapper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>db-vendo-client</name>
-	<description>db-vendo-client</description>
+	<name>db-vendo-wrapper</name>
+	<description>db-vendo-wrapper</description>
 
 
 	<properties>
@@ -127,8 +127,8 @@
 <!--						<inputSpec>${project.basedir}/src/main/resources/db-vendo-open-api.yaml</inputSpec>-->
 <!--						<generatorName>java</generatorName>-->
 <!--						<library>resttemplate</library>-->
-<!--						<apiPackage>de.olech2412.dbvendoclient.api</apiPackage>-->
-<!--						<modelPackage>de.olech2412.dbvendoclient.model</modelPackage>-->
+<!--						<apiPackage>de.olech2412.dbvendowrapper.api</apiPackage>-->
+<!--						<modelPackage>de.olech2412.dbvendowrapper.model</modelPackage>-->
 <!--						<groupId>de.olech2412</groupId>-->
 <!--						<artifactId>dbvendo-client</artifactId>-->
 <!--						<artifactVersion>1.0.0</artifactVersion>-->

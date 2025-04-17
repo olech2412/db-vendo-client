@@ -24,8 +24,8 @@ Uses [&#x60;hafasClient.journeys()&#x60;](https://github.com/public-transport/ha
 ### Example
 ```java
 // Import classes:
-//import de.olech2412.dbvendoclient.ApiException;
-//import de.olech2412.dbvendoclient.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.ApiException;
+//import de.olech2412.dbvendowrapper.api.DefaultApi;
 
 
 DefaultApi apiInstance = new DefaultApi();
@@ -139,8 +139,8 @@ Uses [&#x60;hafasClient.refreshJourney()&#x60;](https://github.com/public-transp
 ### Example
 ```java
 // Import classes:
-//import de.olech2412.dbvendoclient.ApiException;
-//import de.olech2412.dbvendoclient.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.ApiException;
+//import de.olech2412.dbvendowrapper.api.DefaultApi;
 
 
 DefaultApi apiInstance = new DefaultApi();
@@ -206,8 +206,8 @@ Uses [&#x60;hafasClient.locations()&#x60;](https://github.com/public-transport/h
 ### Example
 ```java
 // Import classes:
-//import de.olech2412.dbvendoclient.ApiException;
-//import de.olech2412.dbvendoclient.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.ApiException;
+//import de.olech2412.dbvendowrapper.api.DefaultApi;
 
 
 DefaultApi apiInstance = new DefaultApi();
@@ -267,8 +267,8 @@ Uses [&#x60;hafasClient.nearby()&#x60;](https://github.com/public-transport/hafa
 ### Example
 ```java
 // Import classes:
-//import de.olech2412.dbvendoclient.ApiException;
-//import de.olech2412.dbvendoclient.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.ApiException;
+//import de.olech2412.dbvendowrapper.api.DefaultApi;
 
 
 DefaultApi apiInstance = new DefaultApi();
@@ -326,8 +326,8 @@ Works like &#x60;/stops/{id}/departures&#x60;, except that it uses [&#x60;hafasC
 ### Example
 ```java
 // Import classes:
-//import de.olech2412.dbvendoclient.ApiException;
-//import de.olech2412.dbvendoclient.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.ApiException;
+//import de.olech2412.dbvendowrapper.api.DefaultApi;
 
 
 DefaultApi apiInstance = new DefaultApi();
@@ -389,8 +389,8 @@ Uses [&#x60;hafasClient.departures()&#x60;](https://github.com/public-transport/
 ### Example
 ```java
 // Import classes:
-//import de.olech2412.dbvendoclient.ApiException;
-//import de.olech2412.dbvendoclient.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.ApiException;
+//import de.olech2412.dbvendowrapper.api.DefaultApi;
 
 
 DefaultApi apiInstance = new DefaultApi();
@@ -452,8 +452,8 @@ Uses [&#x60;hafasClient.stop()&#x60;](https://github.com/public-transport/hafas-
 ### Example
 ```java
 // Import classes:
-//import de.olech2412.dbvendoclient.ApiException;
-//import de.olech2412.dbvendoclient.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.ApiException;
+//import de.olech2412.dbvendowrapper.api.DefaultApi;
 
 
 DefaultApi apiInstance = new DefaultApi();
@@ -503,8 +503,8 @@ Uses [&#x60;hafasClient.trip()&#x60;](https://github.com/public-transport/hafas-
 ### Example
 ```java
 // Import classes:
-//import de.olech2412.dbvendoclient.ApiException;
-//import de.olech2412.dbvendoclient.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.ApiException;
+//import de.olech2412.dbvendowrapper.api.DefaultApi;
 
 
 DefaultApi apiInstance = new DefaultApi();
