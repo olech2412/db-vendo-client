@@ -28,7 +28,7 @@ While leveraging the capabilities of the auto-generated Swagger client, `db-vend
 
 This client builds upon the [`db-vendo-client`](https://github.com/public-transport/db-vendo-client), a JavaScript client for bahn.de public transport APIs. The underlying API is maintained by the open-source community and offers a modern, Swagger-based interface to Deutsche Bahn's HAFAS platform.
 
-A big thank you to [public-transport community]([https://github.com/olech2412](https://github.com/public-transport))
+A big thank you to the [public-transport community]([https://github.com/olech2412](https://github.com/public-transport)
 
 👉 [https://github.com/public-transport/db-vendo-client](https://github.com/public-transport/db-vendo-client)
 
