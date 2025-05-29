@@ -1,11 +1,35 @@
 package de.olech2412.dbvendowrapper.requests;
 
-
 /**
- * This class represents a request to search for locations.
- * It implements the DBVendoRequest interface.
+ * <h1>Request-Klasse für Standortsuche</h1>
+ *
+ * <p>Diese Klasse ermöglicht eine flexible Suche nach verschiedenen Arten von Standorten
+ * wie Haltestellen, Adressen und Points of Interest im DB-System.</p>
+ *
+ * <h2>Hauptfunktionen:</h2>
+ * <ul>
+ *   <li>Textbasierte Suche nach Standorten</li>
+ *   <li>Unscharfe Suche (Fuzzy-Search) für bessere Suchergebnisse</li>
+ *   <li>Filterung nach Standorttypen:
+ *     <ul>
+ *       <li>Haltestellen ({@code stops})</li>
+ *       <li>Adressen ({@code addresses})</li>
+ *       <li>POIs ({@code poi})</li>
+ *     </ul>
+ *   </li>
+ *   <li>Begrenzung der Ergebnisanzahl ({@code maxResults})</li>
+ * </ul>
+ *
+ * <h2>Anwendungsfälle:</h2>
+ * <ul>
+ *   <li>Autovervollständigung in Suchfeldern</li>
+ *   <li>Validierung von Benutzerstandorteingaben</li>
+ *   <li>Standortbasierte Dienste</li>
+ * </ul>
  *
  * @author olech2412
+ * @version 1.0
+ * @see DBVendoRequest
  */
 public class LocationSearchRequest implements DBVendoRequest {
 

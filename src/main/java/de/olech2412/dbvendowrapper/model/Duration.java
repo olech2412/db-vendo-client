@@ -36,7 +36,7 @@ public class Duration {
     @jakarta.annotation.Nullable
     private BigDecimal duration;
     @jakarta.annotation.Nullable
-    private List<StopsIdGet2XXResponse> stations = new ArrayList<>();
+    private List<StopsIdResponse> stations = new ArrayList<>();
 
     public Duration() {
     }
@@ -67,13 +67,13 @@ public class Duration {
         this.duration = duration;
     }
 
-    public Duration stations(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> stations) {
+    public Duration stations(@jakarta.annotation.Nullable List<StopsIdResponse> stations) {
 
         this.stations = stations;
         return this;
     }
 
-    public Duration addStationsItem(StopsIdGet2XXResponse stationsItem) {
+    public Duration addStationsItem(StopsIdResponse stationsItem) {
         if (this.stations == null) {
             this.stations = new ArrayList<>();
         }
@@ -90,14 +90,14 @@ public class Duration {
     @JsonProperty(JSON_PROPERTY_STATIONS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-    public List<StopsIdGet2XXResponse> getStations() {
+    public List<StopsIdResponse> getStations() {
         return stations;
     }
 
 
     @JsonProperty(JSON_PROPERTY_STATIONS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public void setStations(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> stations) {
+    public void setStations(@jakarta.annotation.Nullable List<StopsIdResponse> stations) {
         this.stations = stations;
     }
 

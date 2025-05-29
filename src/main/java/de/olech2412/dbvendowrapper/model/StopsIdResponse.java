@@ -22,32 +22,32 @@ import java.util.*;
  * StopsIdGet2XXResponse
  */
 @JsonPropertyOrder({
-        StopsIdGet2XXResponse.JSON_PROPERTY_TYPE,
-        StopsIdGet2XXResponse.JSON_PROPERTY_ID,
-        StopsIdGet2XXResponse.JSON_PROPERTY_NAME,
-        StopsIdGet2XXResponse.JSON_PROPERTY_POI,
-        StopsIdGet2XXResponse.JSON_PROPERTY_ADDRESS,
-        StopsIdGet2XXResponse.JSON_PROPERTY_LONGITUDE,
-        StopsIdGet2XXResponse.JSON_PROPERTY_LATITUDE,
-        StopsIdGet2XXResponse.JSON_PROPERTY_ALTITUDE,
-        StopsIdGet2XXResponse.JSON_PROPERTY_DISTANCE,
-        StopsIdGet2XXResponse.JSON_PROPERTY_STATION,
-        StopsIdGet2XXResponse.JSON_PROPERTY_LOCATION,
-        StopsIdGet2XXResponse.JSON_PROPERTY_PRODUCTS,
-        StopsIdGet2XXResponse.JSON_PROPERTY_LINES,
-        StopsIdGet2XXResponse.JSON_PROPERTY_IS_META,
-        StopsIdGet2XXResponse.JSON_PROPERTY_REGIONS,
-        StopsIdGet2XXResponse.JSON_PROPERTY_FACILITIES,
-        StopsIdGet2XXResponse.JSON_PROPERTY_REISEZENTRUM_OPENING_HOURS,
-        StopsIdGet2XXResponse.JSON_PROPERTY_STOPS,
-        StopsIdGet2XXResponse.JSON_PROPERTY_ENTRANCES,
-        StopsIdGet2XXResponse.JSON_PROPERTY_TRANSIT_AUTHORITY,
-        StopsIdGet2XXResponse.JSON_PROPERTY_IDS,
-        StopsIdGet2XXResponse.JSON_PROPERTY_LOAD_FACTOR
+        StopsIdResponse.JSON_PROPERTY_TYPE,
+        StopsIdResponse.JSON_PROPERTY_ID,
+        StopsIdResponse.JSON_PROPERTY_NAME,
+        StopsIdResponse.JSON_PROPERTY_POI,
+        StopsIdResponse.JSON_PROPERTY_ADDRESS,
+        StopsIdResponse.JSON_PROPERTY_LONGITUDE,
+        StopsIdResponse.JSON_PROPERTY_LATITUDE,
+        StopsIdResponse.JSON_PROPERTY_ALTITUDE,
+        StopsIdResponse.JSON_PROPERTY_DISTANCE,
+        StopsIdResponse.JSON_PROPERTY_STATION,
+        StopsIdResponse.JSON_PROPERTY_LOCATION,
+        StopsIdResponse.JSON_PROPERTY_PRODUCTS,
+        StopsIdResponse.JSON_PROPERTY_LINES,
+        StopsIdResponse.JSON_PROPERTY_IS_META,
+        StopsIdResponse.JSON_PROPERTY_REGIONS,
+        StopsIdResponse.JSON_PROPERTY_FACILITIES,
+        StopsIdResponse.JSON_PROPERTY_REISEZENTRUM_OPENING_HOURS,
+        StopsIdResponse.JSON_PROPERTY_STOPS,
+        StopsIdResponse.JSON_PROPERTY_ENTRANCES,
+        StopsIdResponse.JSON_PROPERTY_TRANSIT_AUTHORITY,
+        StopsIdResponse.JSON_PROPERTY_IDS,
+        StopsIdResponse.JSON_PROPERTY_LOAD_FACTOR
 })
 @JsonTypeName("_stops__id__get_2XX_response")
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-04-11T16:58:48.518685525+02:00[Europe/Berlin]", comments = "Generator version: 7.12.0")
-public class StopsIdGet2XXResponse {
+public class StopsIdResponse implements CachedAwareResponse {
     public static final String JSON_PROPERTY_TYPE = "type";
     public static final String JSON_PROPERTY_ID = "id";
     public static final String JSON_PROPERTY_NAME = "name";
@@ -105,7 +105,7 @@ public class StopsIdGet2XXResponse {
     @jakarta.annotation.Nullable
     private ReisezentrumOpeningHours reisezentrumOpeningHours;
     @jakarta.annotation.Nullable
-    private List<StopsIdGet2XXResponse> stops = new ArrayList<>();
+    private List<StopsIdResponse> stops = new ArrayList<>();
     @jakarta.annotation.Nullable
     private List<Location> entrances = new ArrayList<>();
     @jakarta.annotation.Nullable
@@ -114,10 +114,22 @@ public class StopsIdGet2XXResponse {
     private Map<String, String> ids = new HashMap<>();
     @jakarta.annotation.Nullable
     private String loadFactor;
-    public StopsIdGet2XXResponse() {
+    private boolean fromCache = false;
+
+    public StopsIdResponse() {
     }
 
-    public StopsIdGet2XXResponse type(@jakarta.annotation.Nullable TypeEnum type) {
+    @Override
+    public void setFromCache(boolean fromCache) {
+        this.fromCache = fromCache;
+    }
+
+    @Override
+    public boolean isFromCache() {
+        return fromCache;
+    }
+
+    public StopsIdResponse type(@jakarta.annotation.Nullable TypeEnum type) {
 
         this.type = type;
         return this;
@@ -142,7 +154,7 @@ public class StopsIdGet2XXResponse {
         this.type = type;
     }
 
-    public StopsIdGet2XXResponse id(@jakarta.annotation.Nullable String id) {
+    public StopsIdResponse id(@jakarta.annotation.Nullable String id) {
 
         this.id = id;
         return this;
@@ -167,7 +179,7 @@ public class StopsIdGet2XXResponse {
         this.id = id;
     }
 
-    public StopsIdGet2XXResponse name(@jakarta.annotation.Nullable String name) {
+    public StopsIdResponse name(@jakarta.annotation.Nullable String name) {
 
         this.name = name;
         return this;
@@ -192,7 +204,7 @@ public class StopsIdGet2XXResponse {
         this.name = name;
     }
 
-    public StopsIdGet2XXResponse poi(@jakarta.annotation.Nullable Boolean poi) {
+    public StopsIdResponse poi(@jakarta.annotation.Nullable Boolean poi) {
 
         this.poi = poi;
         return this;
@@ -217,7 +229,7 @@ public class StopsIdGet2XXResponse {
         this.poi = poi;
     }
 
-    public StopsIdGet2XXResponse address(@jakarta.annotation.Nullable String address) {
+    public StopsIdResponse address(@jakarta.annotation.Nullable String address) {
 
         this.address = address;
         return this;
@@ -242,7 +254,7 @@ public class StopsIdGet2XXResponse {
         this.address = address;
     }
 
-    public StopsIdGet2XXResponse longitude(@jakarta.annotation.Nullable BigDecimal longitude) {
+    public StopsIdResponse longitude(@jakarta.annotation.Nullable BigDecimal longitude) {
 
         this.longitude = longitude;
         return this;
@@ -267,7 +279,7 @@ public class StopsIdGet2XXResponse {
         this.longitude = longitude;
     }
 
-    public StopsIdGet2XXResponse latitude(@jakarta.annotation.Nullable BigDecimal latitude) {
+    public StopsIdResponse latitude(@jakarta.annotation.Nullable BigDecimal latitude) {
 
         this.latitude = latitude;
         return this;
@@ -292,7 +304,7 @@ public class StopsIdGet2XXResponse {
         this.latitude = latitude;
     }
 
-    public StopsIdGet2XXResponse altitude(@jakarta.annotation.Nullable BigDecimal altitude) {
+    public StopsIdResponse altitude(@jakarta.annotation.Nullable BigDecimal altitude) {
 
         this.altitude = altitude;
         return this;
@@ -317,7 +329,7 @@ public class StopsIdGet2XXResponse {
         this.altitude = altitude;
     }
 
-    public StopsIdGet2XXResponse distance(@jakarta.annotation.Nullable BigDecimal distance) {
+    public StopsIdResponse distance(@jakarta.annotation.Nullable BigDecimal distance) {
 
         this.distance = distance;
         return this;
@@ -342,7 +354,7 @@ public class StopsIdGet2XXResponse {
         this.distance = distance;
     }
 
-    public StopsIdGet2XXResponse station(@jakarta.annotation.Nullable Station station) {
+    public StopsIdResponse station(@jakarta.annotation.Nullable Station station) {
 
         this.station = station;
         return this;
@@ -367,7 +379,7 @@ public class StopsIdGet2XXResponse {
         this.station = station;
     }
 
-    public StopsIdGet2XXResponse location(@jakarta.annotation.Nullable Location location) {
+    public StopsIdResponse location(@jakarta.annotation.Nullable Location location) {
 
         this.location = location;
         return this;
@@ -392,13 +404,13 @@ public class StopsIdGet2XXResponse {
         this.location = location;
     }
 
-    public StopsIdGet2XXResponse products(@jakarta.annotation.Nullable Map<String, Boolean> products) {
+    public StopsIdResponse products(@jakarta.annotation.Nullable Map<String, Boolean> products) {
 
         this.products = products;
         return this;
     }
 
-    public StopsIdGet2XXResponse putProductsItem(String key, Boolean productsItem) {
+    public StopsIdResponse putProductsItem(String key, Boolean productsItem) {
         if (this.products == null) {
             this.products = new HashMap<>();
         }
@@ -425,13 +437,13 @@ public class StopsIdGet2XXResponse {
         this.products = products;
     }
 
-    public StopsIdGet2XXResponse lines(@jakarta.annotation.Nullable List<Line> lines) {
+    public StopsIdResponse lines(@jakarta.annotation.Nullable List<Line> lines) {
 
         this.lines = lines;
         return this;
     }
 
-    public StopsIdGet2XXResponse addLinesItem(Line linesItem) {
+    public StopsIdResponse addLinesItem(Line linesItem) {
         if (this.lines == null) {
             this.lines = new ArrayList<>();
         }
@@ -458,7 +470,7 @@ public class StopsIdGet2XXResponse {
         this.lines = lines;
     }
 
-    public StopsIdGet2XXResponse isMeta(@jakarta.annotation.Nullable Boolean isMeta) {
+    public StopsIdResponse isMeta(@jakarta.annotation.Nullable Boolean isMeta) {
 
         this.isMeta = isMeta;
         return this;
@@ -483,13 +495,13 @@ public class StopsIdGet2XXResponse {
         this.isMeta = isMeta;
     }
 
-    public StopsIdGet2XXResponse regions(@jakarta.annotation.Nullable List<String> regions) {
+    public StopsIdResponse regions(@jakarta.annotation.Nullable List<String> regions) {
 
         this.regions = regions;
         return this;
     }
 
-    public StopsIdGet2XXResponse addRegionsItem(String regionsItem) {
+    public StopsIdResponse addRegionsItem(String regionsItem) {
         if (this.regions == null) {
             this.regions = new ArrayList<>();
         }
@@ -516,13 +528,13 @@ public class StopsIdGet2XXResponse {
         this.regions = regions;
     }
 
-    public StopsIdGet2XXResponse facilities(@jakarta.annotation.Nullable Map<String, String> facilities) {
+    public StopsIdResponse facilities(@jakarta.annotation.Nullable Map<String, String> facilities) {
 
         this.facilities = facilities;
         return this;
     }
 
-    public StopsIdGet2XXResponse putFacilitiesItem(String key, String facilitiesItem) {
+    public StopsIdResponse putFacilitiesItem(String key, String facilitiesItem) {
         if (this.facilities == null) {
             this.facilities = new HashMap<>();
         }
@@ -549,7 +561,7 @@ public class StopsIdGet2XXResponse {
         this.facilities = facilities;
     }
 
-    public StopsIdGet2XXResponse reisezentrumOpeningHours(@jakarta.annotation.Nullable ReisezentrumOpeningHours reisezentrumOpeningHours) {
+    public StopsIdResponse reisezentrumOpeningHours(@jakarta.annotation.Nullable ReisezentrumOpeningHours reisezentrumOpeningHours) {
 
         this.reisezentrumOpeningHours = reisezentrumOpeningHours;
         return this;
@@ -574,13 +586,13 @@ public class StopsIdGet2XXResponse {
         this.reisezentrumOpeningHours = reisezentrumOpeningHours;
     }
 
-    public StopsIdGet2XXResponse stops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> stops) {
+    public StopsIdResponse stops(@jakarta.annotation.Nullable List<StopsIdResponse> stops) {
 
         this.stops = stops;
         return this;
     }
 
-    public StopsIdGet2XXResponse addStopsItem(StopsIdGet2XXResponse stopsItem) {
+    public StopsIdResponse addStopsItem(StopsIdResponse stopsItem) {
         if (this.stops == null) {
             this.stops = new ArrayList<>();
         }
@@ -597,23 +609,23 @@ public class StopsIdGet2XXResponse {
     @JsonProperty(JSON_PROPERTY_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-    public List<StopsIdGet2XXResponse> getStops() {
+    public List<StopsIdResponse> getStops() {
         return stops;
     }
 
     @JsonProperty(JSON_PROPERTY_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public void setStops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> stops) {
+    public void setStops(@jakarta.annotation.Nullable List<StopsIdResponse> stops) {
         this.stops = stops;
     }
 
-    public StopsIdGet2XXResponse entrances(@jakarta.annotation.Nullable List<Location> entrances) {
+    public StopsIdResponse entrances(@jakarta.annotation.Nullable List<Location> entrances) {
 
         this.entrances = entrances;
         return this;
     }
 
-    public StopsIdGet2XXResponse addEntrancesItem(Location entrancesItem) {
+    public StopsIdResponse addEntrancesItem(Location entrancesItem) {
         if (this.entrances == null) {
             this.entrances = new ArrayList<>();
         }
@@ -640,7 +652,7 @@ public class StopsIdGet2XXResponse {
         this.entrances = entrances;
     }
 
-    public StopsIdGet2XXResponse transitAuthority(@jakarta.annotation.Nullable String transitAuthority) {
+    public StopsIdResponse transitAuthority(@jakarta.annotation.Nullable String transitAuthority) {
 
         this.transitAuthority = transitAuthority;
         return this;
@@ -665,13 +677,13 @@ public class StopsIdGet2XXResponse {
         this.transitAuthority = transitAuthority;
     }
 
-    public StopsIdGet2XXResponse ids(@jakarta.annotation.Nullable Map<String, String> ids) {
+    public StopsIdResponse ids(@jakarta.annotation.Nullable Map<String, String> ids) {
 
         this.ids = ids;
         return this;
     }
 
-    public StopsIdGet2XXResponse putIdsItem(String key, String idsItem) {
+    public StopsIdResponse putIdsItem(String key, String idsItem) {
         if (this.ids == null) {
             this.ids = new HashMap<>();
         }
@@ -698,7 +710,7 @@ public class StopsIdGet2XXResponse {
         this.ids = ids;
     }
 
-    public StopsIdGet2XXResponse loadFactor(@jakarta.annotation.Nullable String loadFactor) {
+    public StopsIdResponse loadFactor(@jakarta.annotation.Nullable String loadFactor) {
 
         this.loadFactor = loadFactor;
         return this;
@@ -731,29 +743,29 @@ public class StopsIdGet2XXResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        StopsIdGet2XXResponse stopsIdGet2XXResponse = (StopsIdGet2XXResponse) o;
-        return Objects.equals(this.type, stopsIdGet2XXResponse.type) &&
-                Objects.equals(this.id, stopsIdGet2XXResponse.id) &&
-                Objects.equals(this.name, stopsIdGet2XXResponse.name) &&
-                Objects.equals(this.poi, stopsIdGet2XXResponse.poi) &&
-                Objects.equals(this.address, stopsIdGet2XXResponse.address) &&
-                Objects.equals(this.longitude, stopsIdGet2XXResponse.longitude) &&
-                Objects.equals(this.latitude, stopsIdGet2XXResponse.latitude) &&
-                Objects.equals(this.altitude, stopsIdGet2XXResponse.altitude) &&
-                Objects.equals(this.distance, stopsIdGet2XXResponse.distance) &&
-                Objects.equals(this.station, stopsIdGet2XXResponse.station) &&
-                Objects.equals(this.location, stopsIdGet2XXResponse.location) &&
-                Objects.equals(this.products, stopsIdGet2XXResponse.products) &&
-                Objects.equals(this.lines, stopsIdGet2XXResponse.lines) &&
-                Objects.equals(this.isMeta, stopsIdGet2XXResponse.isMeta) &&
-                Objects.equals(this.regions, stopsIdGet2XXResponse.regions) &&
-                Objects.equals(this.facilities, stopsIdGet2XXResponse.facilities) &&
-                Objects.equals(this.reisezentrumOpeningHours, stopsIdGet2XXResponse.reisezentrumOpeningHours) &&
-                Objects.equals(this.stops, stopsIdGet2XXResponse.stops) &&
-                Objects.equals(this.entrances, stopsIdGet2XXResponse.entrances) &&
-                Objects.equals(this.transitAuthority, stopsIdGet2XXResponse.transitAuthority) &&
-                Objects.equals(this.ids, stopsIdGet2XXResponse.ids) &&
-                Objects.equals(this.loadFactor, stopsIdGet2XXResponse.loadFactor);
+        StopsIdResponse stopsIdResponse = (StopsIdResponse) o;
+        return Objects.equals(this.type, stopsIdResponse.type) &&
+                Objects.equals(this.id, stopsIdResponse.id) &&
+                Objects.equals(this.name, stopsIdResponse.name) &&
+                Objects.equals(this.poi, stopsIdResponse.poi) &&
+                Objects.equals(this.address, stopsIdResponse.address) &&
+                Objects.equals(this.longitude, stopsIdResponse.longitude) &&
+                Objects.equals(this.latitude, stopsIdResponse.latitude) &&
+                Objects.equals(this.altitude, stopsIdResponse.altitude) &&
+                Objects.equals(this.distance, stopsIdResponse.distance) &&
+                Objects.equals(this.station, stopsIdResponse.station) &&
+                Objects.equals(this.location, stopsIdResponse.location) &&
+                Objects.equals(this.products, stopsIdResponse.products) &&
+                Objects.equals(this.lines, stopsIdResponse.lines) &&
+                Objects.equals(this.isMeta, stopsIdResponse.isMeta) &&
+                Objects.equals(this.regions, stopsIdResponse.regions) &&
+                Objects.equals(this.facilities, stopsIdResponse.facilities) &&
+                Objects.equals(this.reisezentrumOpeningHours, stopsIdResponse.reisezentrumOpeningHours) &&
+                Objects.equals(this.stops, stopsIdResponse.stops) &&
+                Objects.equals(this.entrances, stopsIdResponse.entrances) &&
+                Objects.equals(this.transitAuthority, stopsIdResponse.transitAuthority) &&
+                Objects.equals(this.ids, stopsIdResponse.ids) &&
+                Objects.equals(this.loadFactor, stopsIdResponse.loadFactor);
     }
 
     @Override

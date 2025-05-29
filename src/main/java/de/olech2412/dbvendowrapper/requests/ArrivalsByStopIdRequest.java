@@ -5,10 +5,46 @@ import de.olech2412.dbvendowrapper.model.ProfileSpecificProducts;
 import java.time.OffsetDateTime;
 
 /**
- * This class represents a request to get arrivals by stop ID.
- * It implements the DBVendoRequest interface.
+ * <h1>Request-Klasse für Ankunftszeiten einer Haltestelle</h1>
+ *
+ * <p>Diese Klasse ermöglicht die Abfrage von Ankunftszeiten an einer bestimmten Haltestelle
+ * mit verschiedenen Filteroptionen und Konfigurationsmöglichkeiten.</p>
+ *
+ * <h2>Hauptfunktionen:</h2>
+ * <ul>
+ *   <li>Abfrage von Ankunftszeiten für eine spezifische Haltestellen-ID</li>
+ *   <li>Zeitliche Einschränkungen:
+ *     <ul>
+ *       <li>Ankunftszeit ({@code arrivalTime})</li>
+ *       <li>Betrachtungszeitraum ({@code duration})</li>
+ *     </ul>
+ *   </li>
+ *   <li>Filteroptionen:
+ *     <ul>
+ *       <li>Richtungsfilter ({@code direction})</li>
+ *       <li>Verkehrsmittelfilter ({@code profileSpecificProducts})</li>
+ *       <li>Maximale Anzahl Ergebnisse ({@code maxResults})</li>
+ *     </ul>
+ *   </li>
+ *   <li>Zusätzliche Informationen:
+ *     <ul>
+ *       <li>Linieninformationen ({@code linesOfStops})</li>
+ *       <li>Störungsmeldungen ({@code remarks})</li>
+ *     </ul>
+ *   </li>
+ * </ul>
+ *
+ * <h2>Anwendungsfälle:</h2>
+ * <ul>
+ *   <li>Anzeige von Ankunftstafeln</li>
+ *   <li>Fahrplanauskunft an Haltestellen</li>
+ *   <li>Echtzeitinformationen zu Ankünften</li>
+ * </ul>
  *
  * @author olech2412
+ * @version 1.0
+ * @see DBVendoRequest
+ * @see ProfileSpecificProducts
  */
 public class ArrivalsByStopIdRequest implements DBVendoRequest {
 

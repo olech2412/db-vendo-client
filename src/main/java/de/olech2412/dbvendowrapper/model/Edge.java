@@ -40,9 +40,9 @@ public class Edge {
     public static final String JSON_PROPERTY_DIR = "dir";
     public static final String JSON_PROPERTY_ICO_CRD = "icoCrd";
     @jakarta.annotation.Nullable
-    private StopsIdGet2XXResponse fromLocation;
+    private StopsIdResponse fromLocation;
     @jakarta.annotation.Nullable
-    private StopsIdGet2XXResponse toLocation;
+    private StopsIdResponse toLocation;
     @jakarta.annotation.Nullable
     private Map<String, Object> icon = new HashMap<>();
     @jakarta.annotation.Nullable
@@ -53,7 +53,7 @@ public class Edge {
     public Edge() {
     }
 
-    public Edge fromLocation(@jakarta.annotation.Nullable StopsIdGet2XXResponse fromLocation) {
+    public Edge fromLocation(@jakarta.annotation.Nullable StopsIdResponse fromLocation) {
 
         this.fromLocation = fromLocation;
         return this;
@@ -68,18 +68,18 @@ public class Edge {
     @JsonProperty(JSON_PROPERTY_FROM_LOCATION)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-    public StopsIdGet2XXResponse getFromLocation() {
+    public StopsIdResponse getFromLocation() {
         return fromLocation;
     }
 
 
     @JsonProperty(JSON_PROPERTY_FROM_LOCATION)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public void setFromLocation(@jakarta.annotation.Nullable StopsIdGet2XXResponse fromLocation) {
+    public void setFromLocation(@jakarta.annotation.Nullable StopsIdResponse fromLocation) {
         this.fromLocation = fromLocation;
     }
 
-    public Edge toLocation(@jakarta.annotation.Nullable StopsIdGet2XXResponse toLocation) {
+    public Edge toLocation(@jakarta.annotation.Nullable StopsIdResponse toLocation) {
 
         this.toLocation = toLocation;
         return this;
@@ -94,14 +94,14 @@ public class Edge {
     @JsonProperty(JSON_PROPERTY_TO_LOCATION)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-    public StopsIdGet2XXResponse getToLocation() {
+    public StopsIdResponse getToLocation() {
         return toLocation;
     }
 
 
     @JsonProperty(JSON_PROPERTY_TO_LOCATION)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public void setToLocation(@jakarta.annotation.Nullable StopsIdGet2XXResponse toLocation) {
+    public void setToLocation(@jakarta.annotation.Nullable StopsIdResponse toLocation) {
         this.toLocation = toLocation;
     }
 

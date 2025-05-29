@@ -1,11 +1,34 @@
 package de.olech2412.dbvendowrapper.requests;
 
-
 /**
- * This class represents a request to get journey details using a refresh token.
- * It implements the DBVendoRequest interface.
+ * <h1>Request-Klasse für die Aktualisierung von Reisedetails</h1>
+ *
+ * <p>Diese Klasse ermöglicht es, aktualisierte Informationen zu einer bereits abgefragten
+ * Reise mittels eines Refresh-Tokens zu erhalten, ohne eine komplett neue Suche durchführen zu müssen.</p>
+ *
+ * <h2>Hauptfunktionen:</h2>
+ * <ul>
+ *   <li>Aktualisierung von Reisedaten mittels Refresh-Token</li>
+ *   <li>Konfigurierbare Detailtiefe der Ergebnisse:
+ *     <ul>
+ *       <li>Zwischenhalte ({@code stopOvers})</li>
+ *       <li>Ticketinformationen ({@code tickets})</li>
+ *       <li>Streckenverläufe ({@code polylines})</li>
+ *       <li>Untergeordnete Haltestellen ({@code subStops})</li>
+ *     </ul>
+ *   </li>
+ * </ul>
+ *
+ * <h2>Besonders nützlich für:</h2>
+ * <ul>
+ *   <li>Echtzeitaktualisierungen von Reiserouten</li>
+ *   <li>Abruf von aktualisierten Verspätungsinformationen</li>
+ *   <li>Nachverfolgung von Änderungen in der Reiseverbindung</li>
+ * </ul>
  *
  * @author olech2412
+ * @version 1.0
+ * @see DBVendoRequest
  */
 public class JourneyByRefreshTokenRequest implements DBVendoRequest {
 

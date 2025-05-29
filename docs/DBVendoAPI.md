@@ -1,17 +1,17 @@
-# DefaultApi
+# DBVendoAPI
 
 All URIs are relative to */*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**journeysGet**](DefaultApi.md#journeysGet) | **GET** /journeys | Finds journeys from A to B.
-[**journeysRefGet**](DefaultApi.md#journeysRefGet) | **GET** /journeys/{ref} | Fetches up-to-date realtime data for a journey computed before.
-[**locationsGet**](DefaultApi.md#locationsGet) | **GET** /locations | Finds stops/stations, POIs and addresses matching a query.
-[**locationsNearbyGet**](DefaultApi.md#locationsNearbyGet) | **GET** /locations/nearby | Finds stops/stations &amp; POIs close to a geolocation.
-[**stopsIdArrivalsGet**](DefaultApi.md#stopsIdArrivalsGet) | **GET** /stops/{id}/arrivals | Fetches arrivals at a stop/station.
-[**stopsIdDeparturesGet**](DefaultApi.md#stopsIdDeparturesGet) | **GET** /stops/{id}/departures | Fetches departures at a stop/station.
-[**stopsIdGet**](DefaultApi.md#stopsIdGet) | **GET** /stops/{id} | Finds a stop/station by ID.
-[**tripsIdGet**](DefaultApi.md#tripsIdGet) | **GET** /trips/{id} | Fetches a trip by ID.
+[**journeysGet**](DBVendoAPI.md#journeysGet) | **GET** /journeys | Finds journeys from A to B.
+[**journeysRefGet**](DBVendoAPI.md#journeysRefGet) | **GET** /journeys/{ref} | Fetches up-to-date realtime data for a journey computed before.
+[**locationsGet**](DBVendoAPI.md#locationsGet) | **GET** /locations | Finds stops/stations, POIs and addresses matching a query.
+[**locationsNearbyGet**](DBVendoAPI.md#locationsNearbyGet) | **GET** /locations/nearby | Finds stops/stations &amp; POIs close to a geolocation.
+[**stopsIdArrivalsGet**](DBVendoAPI.md#stopsIdArrivalsGet) | **GET** /stops/{id}/arrivals | Fetches arrivals at a stop/station.
+[**stopsIdDeparturesGet**](DBVendoAPI.md#stopsIdDeparturesGet) | **GET** /stops/{id}/departures | Fetches departures at a stop/station.
+[**stopsIdGet**](DBVendoAPI.md#stopsIdGet) | **GET** /stops/{id} | Finds a stop/station by ID.
+[**tripsIdGet**](DBVendoAPI.md#tripsIdGet) | **GET** /trips/{id} | Fetches a trip by ID.
 
 <a name="journeysGet"></a>
 # **journeysGet**
@@ -25,10 +25,10 @@ Uses [&#x60;hafasClient.journeys()&#x60;](https://github.com/public-transport/ha
 ```java
 // Import classes:
 //import de.olech2412.dbvendowrapper.ApiException;
-//import de.olech2412.dbvendowrapper.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.api.DBVendoAPI;
 
 
-DefaultApi apiInstance = new DefaultApi();
+DBVendoAPI apiInstance = new DBVendoAPI();
 String from = "from_example"; // String | \"from\" as stop/station ID (e.g. from=8010159 for Halle (Saale) Hbf)
 String fromId = "fromId_example"; // String | \"from\" as POI (e.g. from.id=991561765&from.latitude=51.48364&from.longitude=11.98084 for Halle+(Saale),+Stadtpark+Halle+(Grünanlagen))
 String fromAddress = "fromAddress_example"; // String | \"from\" as an address (e.g. from.latitude=51.25639&from.longitude=7.46685&from.address=Hansestadt+Breckerfeld,+Hansering+3 for Hansestadt Breckerfeld, Hansering 3)
@@ -69,7 +69,7 @@ try {
     InlineResponse2XX3 result = apiInstance.journeysGet(from, fromId, fromAddress, fromLatitude, fromLongitude, to, toId, toAddress, toLatitude, toLongitude, departure, arrival, earlierThan, laterThan, results, stopovers, transfers, transferTime, accessibility, bike, startWithWalking, walkingSpeed, tickets, polylines, subStops, entrances, remarks, scheduledDays, notOnlyFastRoutes, bestprice, language, loyaltyCard, firstClass, age, products, pretty);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling DefaultApi#journeysGet");
+    System.err.println("Exception when calling DBVendoAPI#journeysGet");
     e.printStackTrace();
 }
 ```
@@ -140,10 +140,10 @@ Uses [&#x60;hafasClient.refreshJourney()&#x60;](https://github.com/public-transp
 ```java
 // Import classes:
 //import de.olech2412.dbvendowrapper.ApiException;
-//import de.olech2412.dbvendowrapper.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.api.DBVendoAPI;
 
 
-DefaultApi apiInstance = new DefaultApi();
+DBVendoAPI apiInstance = new DBVendoAPI();
 String ref = "ref_example"; // String | The journey's `refreshToken`.
 Boolean stopovers = false; // Boolean | Fetch & parse stopovers on the way?
 Boolean tickets = false; // Boolean | Return information about available tickets? mutually exclusive with polylines
@@ -160,7 +160,7 @@ try {
     InlineResponse2XX5 result = apiInstance.journeysRefGet(ref, stopovers, tickets, polylines, subStops, entrances, remarks, scheduledDays, notOnlyFastRoutes, bestprice, language, pretty);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling DefaultApi#journeysRefGet");
+    System.err.println("Exception when calling DBVendoAPI#journeysRefGet");
     e.printStackTrace();
 }
 ```
@@ -207,10 +207,10 @@ Uses [&#x60;hafasClient.locations()&#x60;](https://github.com/public-transport/h
 ```java
 // Import classes:
 //import de.olech2412.dbvendowrapper.ApiException;
-//import de.olech2412.dbvendowrapper.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.api.DBVendoAPI;
 
 
-DefaultApi apiInstance = new DefaultApi();
+DBVendoAPI apiInstance = new DBVendoAPI();
 String query = "query_example"; // String | The term to search for.
 Boolean fuzzy = true; // Boolean | Find more than exact matches?
 Integer results = 10; // Integer | How many stations shall be shown?
@@ -224,7 +224,7 @@ try {
     List<Object> result = apiInstance.locationsGet(query, fuzzy, results, stops, addresses, poi, linesOfStops, language, pretty);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling DefaultApi#locationsGet");
+    System.err.println("Exception when calling DBVendoAPI#locationsGet");
     e.printStackTrace();
 }
 ```
@@ -268,10 +268,10 @@ Uses [&#x60;hafasClient.nearby()&#x60;](https://github.com/public-transport/hafa
 ```java
 // Import classes:
 //import de.olech2412.dbvendowrapper.ApiException;
-//import de.olech2412.dbvendowrapper.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.api.DBVendoAPI;
 
 
-DefaultApi apiInstance = new DefaultApi();
+DBVendoAPI apiInstance = new DBVendoAPI();
 Location location = new Location(); // Location | 
 Integer results = 8; // Integer | maximum number of results
 Integer distance = 56; // Integer | maximum walking distance in meters – Default: –
@@ -284,7 +284,7 @@ try {
     List<Object> result = apiInstance.locationsNearbyGet(location, results, distance, stops, poi, linesOfStops, language, pretty);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling DefaultApi#locationsNearbyGet");
+    System.err.println("Exception when calling DBVendoAPI#locationsNearbyGet");
     e.printStackTrace();
 }
 ```
@@ -327,10 +327,10 @@ Works like &#x60;/stops/{id}/departures&#x60;, except that it uses [&#x60;hafasC
 ```java
 // Import classes:
 //import de.olech2412.dbvendowrapper.ApiException;
-//import de.olech2412.dbvendowrapper.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.api.DBVendoAPI;
 
 
-DefaultApi apiInstance = new DefaultApi();
+DBVendoAPI apiInstance = new DBVendoAPI();
 String id = "id_example"; // String | stop/station ID to show arrivals for
 OffsetDateTime when = new OffsetDateTime(); // OffsetDateTime | Date & time to get departures for. – Default: *now*
 String direction = "direction_example"; // String | not supported
@@ -345,7 +345,7 @@ try {
     InlineResponse2XX2 result = apiInstance.stopsIdArrivalsGet(id, when, direction, duration, results, linesOfStops, remarks, language, products, pretty);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling DefaultApi#stopsIdArrivalsGet");
+    System.err.println("Exception when calling DBVendoAPI#stopsIdArrivalsGet");
     e.printStackTrace();
 }
 ```
@@ -390,10 +390,10 @@ Uses [&#x60;hafasClient.departures()&#x60;](https://github.com/public-transport/
 ```java
 // Import classes:
 //import de.olech2412.dbvendowrapper.ApiException;
-//import de.olech2412.dbvendowrapper.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.api.DBVendoAPI;
 
 
-DefaultApi apiInstance = new DefaultApi();
+DBVendoAPI apiInstance = new DBVendoAPI();
 String id = "id_example"; // String | stop/station ID to show departures for
 OffsetDateTime when = new OffsetDateTime(); // OffsetDateTime | Date & time to get departures for. – Default: *now*
 String direction = "direction_example"; // String | not supported
@@ -408,7 +408,7 @@ try {
     InlineResponse2XX1 result = apiInstance.stopsIdDeparturesGet(id, when, direction, duration, results, linesOfStops, remarks, language, products, pretty);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling DefaultApi#stopsIdDeparturesGet");
+    System.err.println("Exception when calling DBVendoAPI#stopsIdDeparturesGet");
     e.printStackTrace();
 }
 ```
@@ -453,10 +453,10 @@ Uses [&#x60;hafasClient.stop()&#x60;](https://github.com/public-transport/hafas-
 ```java
 // Import classes:
 //import de.olech2412.dbvendowrapper.ApiException;
-//import de.olech2412.dbvendowrapper.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.api.DBVendoAPI;
 
 
-DefaultApi apiInstance = new DefaultApi();
+DBVendoAPI apiInstance = new DBVendoAPI();
 String id = "id_example"; // String | stop/station ID
 Boolean linesOfStops = false; // Boolean | Parse & expose lines at each stop/station?
 String language = "en"; // String | Language of the results.
@@ -465,7 +465,7 @@ try {
     InlineResponse2XX result = apiInstance.stopsIdGet(id, linesOfStops, language, pretty);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling DefaultApi#stopsIdGet");
+    System.err.println("Exception when calling DBVendoAPI#stopsIdGet");
     e.printStackTrace();
 }
 ```
@@ -504,10 +504,10 @@ Uses [&#x60;hafasClient.trip()&#x60;](https://github.com/public-transport/hafas-
 ```java
 // Import classes:
 //import de.olech2412.dbvendowrapper.ApiException;
-//import de.olech2412.dbvendowrapper.api.DefaultApi;
+//import de.olech2412.dbvendowrapper.api.DBVendoAPI;
 
 
-DefaultApi apiInstance = new DefaultApi();
+DBVendoAPI apiInstance = new DBVendoAPI();
 String id = "id_example"; // String | trip ID
 Boolean stopovers = true; // Boolean | Fetch & parse stopovers on the way?
 Boolean remarks = true; // Boolean | Parse & return hints & warnings?
@@ -518,7 +518,7 @@ try {
     InlineResponse2XX4 result = apiInstance.tripsIdGet(id, stopovers, remarks, polyline, language, pretty);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling DefaultApi#tripsIdGet");
+    System.err.println("Exception when calling DBVendoAPI#tripsIdGet");
     e.printStackTrace();
 }
 ```

@@ -5,7 +5,7 @@
 
 	<groupId>de.olech2412</groupId>
 	<artifactId>db-vendo-wrapper</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>db-vendo-wrapper</name>
 	<description>db-vendo-wrapper</description>
 
@@ -84,11 +84,24 @@
 			<version>0.2.6</version>
 		</dependency>
 
+		 <!-- Caching: Caffeine -->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+
 		<!-- test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit-version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>1.21.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -114,35 +127,25 @@
 					</execution>
 				</executions>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>org.openapitools</groupId>-->
-<!--				<artifactId>openapi-generator-maven-plugin</artifactId>-->
-<!--				<version>7.12.0</version> <executions>-->
-<!--				<execution>-->
-<!--					<goals>-->
-<!--						<goal>generate</goal>-->
-<!--					</goals>-->
-<!--					<phase>generate-sources</phase>-->
-<!--					<configuration>-->
-<!--						<inputSpec>${project.basedir}/src/main/resources/db-vendo-open-api.yaml</inputSpec>-->
-<!--						<generatorName>java</generatorName>-->
-<!--						<library>resttemplate</library>-->
-<!--						<apiPackage>de.olech2412.dbvendowrapper.api</apiPackage>-->
-<!--						<modelPackage>de.olech2412.dbvendowrapper.model</modelPackage>-->
-<!--						<groupId>de.olech2412</groupId>-->
-<!--						<artifactId>dbvendo-client</artifactId>-->
-<!--						<artifactVersion>1.0.0</artifactVersion>-->
-<!--						<configOptions>-->
-<!--							<useJakartaEe>true</useJakartaEe>-->
-<!--							<useSpringBoot3>true</useSpringBoot3>-->
-<!--							<dateLibrary>java8</dateLibrary>-->
-<!--						</configOptions>-->
-<!--					</configuration>-->
-<!--				</execution>-->
-<!--			</executions>-->
-<!--			</plugin>-->
-
-
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.13</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

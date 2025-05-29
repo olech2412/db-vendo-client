@@ -6,9 +6,49 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 /**
- * This class represents a request to get journey information.
+ * <h1>Request-Klasse für Reiseverbindungssuche</h1>
+ *
+ * <p>Diese Klasse bietet umfangreiche Möglichkeiten zur Konfiguration der Reiseverbindungssuche
+ * mit verschiedenen Start- und Zielpunkten sowie zusätzlichen Suchparametern.</p>
+ *
+ * <h2>Hauptfunktionen:</h2>
+ * <ul>
+ *   <li>Flexible Startpunkt-Definition:
+ *     <ul>
+ *       <li>Über Namen oder ID ({@code from}, {@code fromId})</li>
+ *       <li>Über Adresse ({@code fromAddress})</li>
+ *       <li>Über geografische Koordinaten ({@code fromLatitude}, {@code fromLongitude})</li>
+ *     </ul>
+ *   </li>
+ *   <li>Flexible Zielpunkt-Definition mit denselben Optionen</li>
+ *   <li>Zeitliche Steuerung:
+ *     <ul>
+ *       <li>Abfahrtszeit ({@code departure})</li>
+ *       <li>Ankunftszeit ({@code arrival})</li>
+ *       <li>Früher/Später-Optionen ({@code earlierThan}, {@code laterThan})</li>
+ *     </ul>
+ *   </li>
+ *   <li>Umfangreiche Filtermöglichkeiten:
+ *     <ul>
+ *       <li>Verkehrsmittel ({@code profileSpecificProducts})</li>
+ *       <li>Transferzeiten ({@code minimumTransferTime})</li>
+ *       <li>Barrierefreiheit ({@code accessibility})</li>
+ *       <li>Preiskategorien ({@code firstClass}, {@code bestPrice})</li>
+ *     </ul>
+ *   </li>
+ * </ul>
+ *
+ * <h2>Besonders geeignet für:</h2>
+ * <ul>
+ *   <li>Komplexe Reiseplanungen</li>
+ *   <li>Verbindungssuchen mit spezifischen Anforderungen</li>
+ *   <li>Optimierung nach verschiedenen Kriterien (Zeit, Preis, Komfort)</li>
+ * </ul>
  *
  * @author olech2412
+ * @version 1.0
+ * @see DBVendoRequest
+ * @see ProfileSpecificProducts
  */
 public class JourneySearchRequest implements DBVendoRequest {
 
