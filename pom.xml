@@ -127,35 +127,25 @@
 					</execution>
 				</executions>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>org.openapitools</groupId>-->
-<!--				<artifactId>openapi-generator-maven-plugin</artifactId>-->
-<!--				<version>7.12.0</version> <executions>-->
-<!--				<execution>-->
-<!--					<goals>-->
-<!--						<goal>generate</goal>-->
-<!--					</goals>-->
-<!--					<phase>generate-sources</phase>-->
-<!--					<configuration>-->
-<!--						<inputSpec>${project.basedir}/src/main/resources/db-vendo-open-api.yaml</inputSpec>-->
-<!--						<generatorName>java</generatorName>-->
-<!--						<library>resttemplate</library>-->
-<!--						<apiPackage>de.olech2412.dbvendowrapper.api</apiPackage>-->
-<!--						<modelPackage>de.olech2412.dbvendowrapper.model</modelPackage>-->
-<!--						<groupId>de.olech2412</groupId>-->
-<!--						<artifactId>dbvendo-client</artifactId>-->
-<!--						<artifactVersion>1.0.0</artifactVersion>-->
-<!--						<configOptions>-->
-<!--							<useJakartaEe>true</useJakartaEe>-->
-<!--							<useSpringBoot3>true</useSpringBoot3>-->
-<!--							<dateLibrary>java8</dateLibrary>-->
-<!--						</configOptions>-->
-<!--					</configuration>-->
-<!--				</execution>-->
-<!--			</executions>-->
-<!--			</plugin>-->
-
-
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.13</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
