@@ -21,52 +21,53 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Objects;
 
 /**
- * TripsIdGet2XXResponse
+ * JourneysRefGet2XXResponse
  */
 @JsonPropertyOrder({
-        TripsIdGet2XXResponse.JSON_PROPERTY_TRIP,
-        TripsIdGet2XXResponse.JSON_PROPERTY_REALTIME_DATA_UPDATED_AT
+        JourneysRefreshResponse.JSON_PROPERTY_JOURNEY,
+        JourneysRefreshResponse.JSON_PROPERTY_REALTIME_DATA_UPDATED_AT
 })
-@JsonTypeName("_trips__id__get_2XX_response")
+@JsonTypeName("_journeys__ref__get_2XX_response")
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-04-11T16:58:48.518685525+02:00[Europe/Berlin]", comments = "Generator version: 7.12.0")
-public class TripsIdGet2XXResponse {
-    public static final String JSON_PROPERTY_TRIP = "trip";
+public class JourneysRefreshResponse implements CachedAwareResponse {
+    public static final String JSON_PROPERTY_JOURNEY = "journey";
     public static final String JSON_PROPERTY_REALTIME_DATA_UPDATED_AT = "realtimeDataUpdatedAt";
     @jakarta.annotation.Nonnull
-    private Trip trip;
+    private Journey journey;
     @jakarta.annotation.Nullable
     private Integer realtimeDataUpdatedAt;
+    private boolean fromCache = false;
 
-    public TripsIdGet2XXResponse() {
+    public JourneysRefreshResponse() {
     }
 
-    public TripsIdGet2XXResponse trip(@jakarta.annotation.Nonnull Trip trip) {
+    public JourneysRefreshResponse journey(@jakarta.annotation.Nonnull Journey journey) {
 
-        this.trip = trip;
+        this.journey = journey;
         return this;
     }
 
     /**
-     * Get trip
+     * Get journey
      *
-     * @return trip
+     * @return journey
      */
     @jakarta.annotation.Nonnull
-    @JsonProperty(JSON_PROPERTY_TRIP)
+    @JsonProperty(JSON_PROPERTY_JOURNEY)
     @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-    public Trip getTrip() {
-        return trip;
+    public Journey getJourney() {
+        return journey;
     }
 
 
-    @JsonProperty(JSON_PROPERTY_TRIP)
+    @JsonProperty(JSON_PROPERTY_JOURNEY)
     @JsonInclude(value = JsonInclude.Include.ALWAYS)
-    public void setTrip(@jakarta.annotation.Nonnull Trip trip) {
-        this.trip = trip;
+    public void setJourney(@jakarta.annotation.Nonnull Journey journey) {
+        this.journey = journey;
     }
 
-    public TripsIdGet2XXResponse realtimeDataUpdatedAt(@jakarta.annotation.Nullable Integer realtimeDataUpdatedAt) {
+    public JourneysRefreshResponse realtimeDataUpdatedAt(@jakarta.annotation.Nullable Integer realtimeDataUpdatedAt) {
 
         this.realtimeDataUpdatedAt = realtimeDataUpdatedAt;
         return this;
@@ -92,6 +93,15 @@ public class TripsIdGet2XXResponse {
         this.realtimeDataUpdatedAt = realtimeDataUpdatedAt;
     }
 
+    @Override
+    public void setFromCache(boolean fromCache) {
+        this.fromCache = fromCache;
+    }
+
+    @Override
+    public boolean isFromCache() {
+        return fromCache;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -101,20 +111,20 @@ public class TripsIdGet2XXResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TripsIdGet2XXResponse tripsIdGet2XXResponse = (TripsIdGet2XXResponse) o;
-        return Objects.equals(this.trip, tripsIdGet2XXResponse.trip) &&
-                Objects.equals(this.realtimeDataUpdatedAt, tripsIdGet2XXResponse.realtimeDataUpdatedAt);
+        JourneysRefreshResponse journeysRefreshResponse = (JourneysRefreshResponse) o;
+        return Objects.equals(this.journey, journeysRefreshResponse.journey) &&
+                Objects.equals(this.realtimeDataUpdatedAt, journeysRefreshResponse.realtimeDataUpdatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(trip, realtimeDataUpdatedAt);
+        return Objects.hash(journey, realtimeDataUpdatedAt);
     }
 
     @Override
     public String toString() {
-        String sb = "class TripsIdGet2XXResponse {\n" +
-                "    trip: " + toIndentedString(trip) + "\n" +
+        String sb = "class JourneysRefGet2XXResponse {\n" +
+                "    journey: " + toIndentedString(journey) + "\n" +
                 "    realtimeDataUpdatedAt: " + toIndentedString(realtimeDataUpdatedAt) + "\n" +
                 "}";
         return sb;

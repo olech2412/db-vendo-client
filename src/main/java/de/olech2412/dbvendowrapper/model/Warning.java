@@ -94,9 +94,9 @@ public class Warning {
     @jakarta.annotation.Nullable
     private List<Line> affectedLines = new ArrayList<>();
     @jakarta.annotation.Nullable
-    private List<StopsIdGet2XXResponse> fromStops = new ArrayList<>();
+    private List<StopsIdResponse> fromStops = new ArrayList<>();
     @jakarta.annotation.Nullable
-    private List<StopsIdGet2XXResponse> toStops = new ArrayList<>();
+    private List<StopsIdResponse> toStops = new ArrayList<>();
     public Warning() {
     }
 
@@ -548,13 +548,13 @@ public class Warning {
         this.affectedLines = affectedLines;
     }
 
-    public Warning fromStops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> fromStops) {
+    public Warning fromStops(@jakarta.annotation.Nullable List<StopsIdResponse> fromStops) {
 
         this.fromStops = fromStops;
         return this;
     }
 
-    public Warning addFromStopsItem(StopsIdGet2XXResponse fromStopsItem) {
+    public Warning addFromStopsItem(StopsIdResponse fromStopsItem) {
         if (this.fromStops == null) {
             this.fromStops = new ArrayList<>();
         }
@@ -571,23 +571,23 @@ public class Warning {
     @JsonProperty(JSON_PROPERTY_FROM_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-    public List<StopsIdGet2XXResponse> getFromStops() {
+    public List<StopsIdResponse> getFromStops() {
         return fromStops;
     }
 
     @JsonProperty(JSON_PROPERTY_FROM_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public void setFromStops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> fromStops) {
+    public void setFromStops(@jakarta.annotation.Nullable List<StopsIdResponse> fromStops) {
         this.fromStops = fromStops;
     }
 
-    public Warning toStops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> toStops) {
+    public Warning toStops(@jakarta.annotation.Nullable List<StopsIdResponse> toStops) {
 
         this.toStops = toStops;
         return this;
     }
 
-    public Warning addToStopsItem(StopsIdGet2XXResponse toStopsItem) {
+    public Warning addToStopsItem(StopsIdResponse toStopsItem) {
         if (this.toStops == null) {
             this.toStops = new ArrayList<>();
         }
@@ -604,13 +604,13 @@ public class Warning {
     @JsonProperty(JSON_PROPERTY_TO_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-    public List<StopsIdGet2XXResponse> getToStops() {
+    public List<StopsIdResponse> getToStops() {
         return toStops;
     }
 
     @JsonProperty(JSON_PROPERTY_TO_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public void setToStops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> toStops) {
+    public void setToStops(@jakarta.annotation.Nullable List<StopsIdResponse> toStops) {
         this.toStops = toStops;
     }
 

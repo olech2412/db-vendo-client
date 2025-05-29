@@ -14,13 +14,13 @@ While leveraging the capabilities of the auto-generated Swagger client, `db-vend
 - **Active Maintenance**  
   Underlying libraries are regularly updated to ensure compatibility and stability.
 
-- **(Upcoming) Built-in Caching**  
+- **Built-in Caching**
   Frequently accessed data, such as trip or stop queries, will be cached to improve performance and reduce redundant API calls.
 
 - **(Upcoming) Request Queueing**  
   A built-in queuing system will manage large volumes of requests in an API-friendly manner, protecting the interface and simplifying bulk processing.
 
-> ⚠️ **Note:** Caching and queuing features are currently **in development** and not yet available in the latest version.
+> ⚠️ **Note:** Queuing feature is currently **in development** and not yet available in the latest version.
 
 ---
 
@@ -55,20 +55,100 @@ Add this dependency to your project's POM:
 </dependency>
 ```
 
+## 🧩 Usage Examples
+
+### Caching-Feature
+
+Das Caching ist standardmäßig aktiviert und speichert häufig genutzte API-Antworten für 10 Minuten. Die Lebensdauer und Größe des Caches können jedoch individuell angepasst werden, indem eine eigene CacheConfig beim Erstellen der DBVendoAPI-Instanz übergeben wird.
+
+**Beispiel: Eigene CacheConfig mit kurzer Ablaufzeit (z.B. für Tests)**
+
+```java
+import de.olech2412.dbvendowrapper.ApiClient;
+import de.olech2412.dbvendowrapper.api.DBVendoAPI;
+import de.olech2412.dbvendowrapper.config.CacheConfig;
+
+// Eigene CacheConfig: 2 Sekunden Ablaufzeit, max. 1000 Einträge
+CacheConfig cacheConfig = new CacheConfig(true, 1000, java.time.Duration.ofSeconds(2));
+DBVendoAPI api = new DBVendoAPI(new ApiClient(), cacheConfig);
+```
+
+**Standardverhalten:**
+
+Ohne explizite Konfiguration wird ein Cache mit 10 Minuten Ablaufzeit und 1000 Einträgen verwendet.
+
+### Builder Pattern for Request Creation
+
+This library provides a builder pattern for creating request objects, making it easy to set optional parameters. The builder pattern allows for a more fluent and readable API, especially when dealing with requests that have many optional parameters.
+
+For example, to create a TripByIdRequest:
+
+1. Use the static builder method with the required parameter(s)
+2. Chain method calls to set optional parameters
+3. Call build() to create the final request object
+
+```
+// Example: Fetching a Trip by ID
+TripByIdRequest tripRequest = TripByIdRequest.builder("trip123")
+    .withStopOvers(true)
+    .withRemarks(true)
+    .withLanguage("en")
+    .build();
+```
+
+The same pattern applies to other request types like LocationsNearbyRequest, which requires a Location object as a parameter.
+
+#### Example 1: Fetching a Trip by ID
+
+```java
+// Create a request using the builder pattern
+TripByIdRequest request = TripByIdRequest.builder("trip123")
+    .withStopOvers(true)
+    .withRemarks(true)
+    .withPolyline(true)
+    .withLanguage("en")
+    .build();
+
+// Execute the request
+DBVendoAPI api = new DBVendoAPI();
+TripsIdGet2XXResponse response = api.tripsIdGet(request);
+```
+
+#### Example 2: Finding Locations Nearby
+
+```java
+// Create a location
+Location location = new Location();
+location.setLatitude(new BigDecimal("52.5200"));
+location.setLongitude(new BigDecimal("13.4050"));
+
+// Create a request using the builder pattern
+LocationsNearbyRequest request = LocationsNearbyRequest.builder(location)
+    .withMaxResults(10)
+    .withDistance(1000)
+    .withStops(true)
+    .withPoi(true)
+    .build();
+
+// Execute the request
+DBVendoAPI api = new DBVendoAPI();
+List<StopsIdGet2XXResponse> locations = api.locationsNearbyGet(request);
+```
+
 ## 📚 Documentation for API Endpoints
 
 All URIs are relative to */*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DefaultApi* | [**journeysGet**](docs/DefaultApi.md#journeysGet) | **GET** /journeys | Finds journeys from A to B.
-*DefaultApi* | [**journeysRefGet**](docs/DefaultApi.md#journeysRefGet) | **GET** /journeys/{ref} | Fetches up-to-date realtime data for a journey computed before.
-*DefaultApi* | [**locationsGet**](docs/DefaultApi.md#locationsGet) | **GET** /locations | Finds stops/stations, POIs and addresses matching a query.
-*DefaultApi* | [**locationsNearbyGet**](docs/DefaultApi.md#locationsNearbyGet) | **GET** /locations/nearby | Finds stops/stations &amp; POIs close to a geolocation.
-*DefaultApi* | [**stopsIdArrivalsGet**](docs/DefaultApi.md#stopsIdArrivalsGet) | **GET** /stops/{id}/arrivals | Fetches arrivals at a stop/station.
-*DefaultApi* | [**stopsIdDeparturesGet**](docs/DefaultApi.md#stopsIdDeparturesGet) | **GET** /stops/{id}/departures | Fetches departures at a stop/station.
-*DefaultApi* | [**stopsIdGet**](docs/DefaultApi.md#stopsIdGet) | **GET** /stops/{id} | Finds a stop/station by ID.
-*DefaultApi* | [**tripsIdGet**](docs/DefaultApi.md#tripsIdGet) | **GET** /trips/{id} | Fetches a trip by ID.
+*DBVendoAPI* | [**journeysGet**](docs/DBVendoAPI.md#journeysGet) | **GET** /journeys | Finds journeys from A to B.
+*DBVendoAPI* | [**journeysRefGet**](docs/DBVendoAPI.md#journeysRefGet) | **GET** /journeys/{ref} | Fetches up-to-date realtime data for a journey computed before.
+*DBVendoAPI* | [**locationsGet**](docs/DBVendoAPI.md#locationsGet) | **GET** /locations | Finds stops/stations, POIs and addresses matching a query.
+*DBVendoAPI* | [**locationsNearbyGet**](docs/DBVendoAPI.md#locationsNearbyGet) | **GET** /locations/nearby | Finds stops/stations &amp; POIs close to a geolocation.
+*DBVendoAPI* | [**stopsIdArrivalsGet**](docs/DBVendoAPI.md#stopsIdArrivalsGet) | **GET** /stops/{id}/arrivals | Fetches arrivals at a stop/station.
+*DBVendoAPI* | [**stopsIdDeparturesGet**](docs/DBVendoAPI.md#stopsIdDeparturesGet) | **GET** /stops/{id}/departures | Fetches departures at a stop/station.
+*DBVendoAPI* | [**stopsIdGet**](docs/DBVendoAPI.md#stopsIdGet) | **GET** /stops/{id} | Finds a stop/station by ID.
+*DBVendoAPI* | [**tripsIdGet**](docs/DBVendoAPI.md#tripsIdGet) | **GET** /trips/{id} | Fetches a trip by ID.
 
 ## 📚 Documentation for Models
 

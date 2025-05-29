@@ -1,7 +1,19 @@
 package de.olech2412.dbvendowrapper.requests;
 
 /**
- * StopByIdReqeuest can find a stop by its ID.
+ * Request-Klasse für die Abfrage von Haltestelleninformationen anhand einer spezifischen ID.
+ * Diese Klasse ermöglicht es, detaillierte Informationen zu einer einzelnen Haltestelle
+ * im DB-System abzurufen.
+ *
+ * Die Klasse unterstützt folgende Hauptfunktionen:
+ * - Abruf von Haltestellendaten mittels eindeutiger ID
+ * - Optionale Einbeziehung von Linieninformationen
+ * - Sprachspezifische Ausgabe der Informationen
+ *
+ * Anwendungsfälle:
+ * - Detailansicht einer Haltestelle
+ * - Anzeige von verfügbaren Linien an einer Haltestelle
+ * - Integration in mehrsprachige Benutzeroberflächen
  *
  * @author olech2412
  */

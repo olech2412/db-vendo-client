@@ -103,9 +103,9 @@ public class StopOverRemarksInner {
     @jakarta.annotation.Nullable
     private List<Line> affectedLines = new ArrayList<>();
     @jakarta.annotation.Nullable
-    private List<StopsIdGet2XXResponse> fromStops = new ArrayList<>();
+    private List<StopsIdResponse> fromStops = new ArrayList<>();
     @jakarta.annotation.Nullable
-    private List<StopsIdGet2XXResponse> toStops = new ArrayList<>();
+    private List<StopsIdResponse> toStops = new ArrayList<>();
     public StopOverRemarksInner() {
     }
 
@@ -607,13 +607,13 @@ public class StopOverRemarksInner {
         this.affectedLines = affectedLines;
     }
 
-    public StopOverRemarksInner fromStops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> fromStops) {
+    public StopOverRemarksInner fromStops(@jakarta.annotation.Nullable List<StopsIdResponse> fromStops) {
 
         this.fromStops = fromStops;
         return this;
     }
 
-    public StopOverRemarksInner addFromStopsItem(StopsIdGet2XXResponse fromStopsItem) {
+    public StopOverRemarksInner addFromStopsItem(StopsIdResponse fromStopsItem) {
         if (this.fromStops == null) {
             this.fromStops = new ArrayList<>();
         }
@@ -630,23 +630,23 @@ public class StopOverRemarksInner {
     @JsonProperty(JSON_PROPERTY_FROM_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-    public List<StopsIdGet2XXResponse> getFromStops() {
+    public List<StopsIdResponse> getFromStops() {
         return fromStops;
     }
 
     @JsonProperty(JSON_PROPERTY_FROM_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public void setFromStops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> fromStops) {
+    public void setFromStops(@jakarta.annotation.Nullable List<StopsIdResponse> fromStops) {
         this.fromStops = fromStops;
     }
 
-    public StopOverRemarksInner toStops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> toStops) {
+    public StopOverRemarksInner toStops(@jakarta.annotation.Nullable List<StopsIdResponse> toStops) {
 
         this.toStops = toStops;
         return this;
     }
 
-    public StopOverRemarksInner addToStopsItem(StopsIdGet2XXResponse toStopsItem) {
+    public StopOverRemarksInner addToStopsItem(StopsIdResponse toStopsItem) {
         if (this.toStops == null) {
             this.toStops = new ArrayList<>();
         }
@@ -663,13 +663,13 @@ public class StopOverRemarksInner {
     @JsonProperty(JSON_PROPERTY_TO_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-    public List<StopsIdGet2XXResponse> getToStops() {
+    public List<StopsIdResponse> getToStops() {
         return toStops;
     }
 
     @JsonProperty(JSON_PROPERTY_TO_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public void setToStops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> toStops) {
+    public void setToStops(@jakarta.annotation.Nullable List<StopsIdResponse> toStops) {
         this.toStops = toStops;
     }
 

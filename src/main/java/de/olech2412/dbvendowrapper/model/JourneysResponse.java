@@ -26,14 +26,14 @@ import java.util.Objects;
  * JourneysGet2XXResponse
  */
 @JsonPropertyOrder({
-        JourneysGet2XXResponse.JSON_PROPERTY_JOURNEYS,
-        JourneysGet2XXResponse.JSON_PROPERTY_REALTIME_DATA_UPDATED_AT,
-        JourneysGet2XXResponse.JSON_PROPERTY_EARLIER_REF,
-        JourneysGet2XXResponse.JSON_PROPERTY_LATER_REF
+        JourneysResponse.JSON_PROPERTY_JOURNEYS,
+        JourneysResponse.JSON_PROPERTY_REALTIME_DATA_UPDATED_AT,
+        JourneysResponse.JSON_PROPERTY_EARLIER_REF,
+        JourneysResponse.JSON_PROPERTY_LATER_REF
 })
 @JsonTypeName("_journeys_get_2XX_response")
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-04-11T16:58:48.518685525+02:00[Europe/Berlin]", comments = "Generator version: 7.12.0")
-public class JourneysGet2XXResponse {
+public class JourneysResponse implements CachedAwareResponse {
     public static final String JSON_PROPERTY_JOURNEYS = "journeys";
     public static final String JSON_PROPERTY_REALTIME_DATA_UPDATED_AT = "realtimeDataUpdatedAt";
     public static final String JSON_PROPERTY_EARLIER_REF = "earlierRef";
@@ -46,17 +46,18 @@ public class JourneysGet2XXResponse {
     private String earlierRef;
     @jakarta.annotation.Nullable
     private String laterRef;
+    private boolean fromCache = false;
 
-    public JourneysGet2XXResponse() {
+    public JourneysResponse() {
     }
 
-    public JourneysGet2XXResponse journeys(@jakarta.annotation.Nonnull List<Journey> journeys) {
+    public JourneysResponse journeys(@jakarta.annotation.Nonnull List<Journey> journeys) {
 
         this.journeys = journeys;
         return this;
     }
 
-    public JourneysGet2XXResponse addJourneysItem(Journey journeysItem) {
+    public JourneysResponse addJourneysItem(Journey journeysItem) {
         if (this.journeys == null) {
             this.journeys = new ArrayList<>();
         }
@@ -84,7 +85,7 @@ public class JourneysGet2XXResponse {
         this.journeys = journeys;
     }
 
-    public JourneysGet2XXResponse realtimeDataUpdatedAt(@jakarta.annotation.Nullable Integer realtimeDataUpdatedAt) {
+    public JourneysResponse realtimeDataUpdatedAt(@jakarta.annotation.Nullable Integer realtimeDataUpdatedAt) {
 
         this.realtimeDataUpdatedAt = realtimeDataUpdatedAt;
         return this;
@@ -110,7 +111,7 @@ public class JourneysGet2XXResponse {
         this.realtimeDataUpdatedAt = realtimeDataUpdatedAt;
     }
 
-    public JourneysGet2XXResponse earlierRef(@jakarta.annotation.Nullable String earlierRef) {
+    public JourneysResponse earlierRef(@jakarta.annotation.Nullable String earlierRef) {
 
         this.earlierRef = earlierRef;
         return this;
@@ -136,7 +137,7 @@ public class JourneysGet2XXResponse {
         this.earlierRef = earlierRef;
     }
 
-    public JourneysGet2XXResponse laterRef(@jakarta.annotation.Nullable String laterRef) {
+    public JourneysResponse laterRef(@jakarta.annotation.Nullable String laterRef) {
 
         this.laterRef = laterRef;
         return this;
@@ -162,6 +163,15 @@ public class JourneysGet2XXResponse {
         this.laterRef = laterRef;
     }
 
+    @Override
+    public void setFromCache(boolean fromCache) {
+        this.fromCache = fromCache;
+    }
+
+    @Override
+    public boolean isFromCache() {
+        return fromCache;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -171,11 +181,11 @@ public class JourneysGet2XXResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        JourneysGet2XXResponse journeysGet2XXResponse = (JourneysGet2XXResponse) o;
-        return Objects.equals(this.journeys, journeysGet2XXResponse.journeys) &&
-                Objects.equals(this.realtimeDataUpdatedAt, journeysGet2XXResponse.realtimeDataUpdatedAt) &&
-                Objects.equals(this.earlierRef, journeysGet2XXResponse.earlierRef) &&
-                Objects.equals(this.laterRef, journeysGet2XXResponse.laterRef);
+        JourneysResponse journeysResponse = (JourneysResponse) o;
+        return Objects.equals(this.journeys, journeysResponse.journeys) &&
+                Objects.equals(this.realtimeDataUpdatedAt, journeysResponse.realtimeDataUpdatedAt) &&
+                Objects.equals(this.earlierRef, journeysResponse.earlierRef) &&
+                Objects.equals(this.laterRef, journeysResponse.laterRef);
     }
 
     @Override

@@ -120,9 +120,9 @@ public class Alternative {
     @jakarta.annotation.Nullable
     private Location currentTripPosition;
     @jakarta.annotation.Nullable
-    private StopsIdGet2XXResponse origin;
+    private StopsIdResponse origin;
     @jakarta.annotation.Nullable
-    private StopsIdGet2XXResponse destination;
+    private StopsIdResponse destination;
     @jakarta.annotation.Nullable
     private PrognosisType prognosisType;
 
@@ -707,7 +707,7 @@ public class Alternative {
         this.currentTripPosition = currentTripPosition;
     }
 
-    public Alternative origin(@jakarta.annotation.Nullable StopsIdGet2XXResponse origin) {
+    public Alternative origin(@jakarta.annotation.Nullable StopsIdResponse origin) {
 
         this.origin = origin;
         return this;
@@ -722,18 +722,18 @@ public class Alternative {
     @JsonProperty(JSON_PROPERTY_ORIGIN)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-    public StopsIdGet2XXResponse getOrigin() {
+    public StopsIdResponse getOrigin() {
         return origin;
     }
 
 
     @JsonProperty(JSON_PROPERTY_ORIGIN)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public void setOrigin(@jakarta.annotation.Nullable StopsIdGet2XXResponse origin) {
+    public void setOrigin(@jakarta.annotation.Nullable StopsIdResponse origin) {
         this.origin = origin;
     }
 
-    public Alternative destination(@jakarta.annotation.Nullable StopsIdGet2XXResponse destination) {
+    public Alternative destination(@jakarta.annotation.Nullable StopsIdResponse destination) {
 
         this.destination = destination;
         return this;
@@ -748,14 +748,14 @@ public class Alternative {
     @JsonProperty(JSON_PROPERTY_DESTINATION)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-    public StopsIdGet2XXResponse getDestination() {
+    public StopsIdResponse getDestination() {
         return destination;
     }
 
 
     @JsonProperty(JSON_PROPERTY_DESTINATION)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public void setDestination(@jakarta.annotation.Nullable StopsIdGet2XXResponse destination) {
+    public void setDestination(@jakarta.annotation.Nullable StopsIdResponse destination) {
         this.destination = destination;
     }
 

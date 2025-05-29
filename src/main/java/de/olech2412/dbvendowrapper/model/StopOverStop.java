@@ -83,7 +83,7 @@ public class StopOverStop {
     @jakarta.annotation.Nullable
     private ReisezentrumOpeningHours reisezentrumOpeningHours;
     @jakarta.annotation.Nullable
-    private List<StopsIdGet2XXResponse> stops = new ArrayList<>();
+    private List<StopsIdResponse> stops = new ArrayList<>();
     @jakarta.annotation.Nullable
     private List<Location> entrances = new ArrayList<>();
     @jakarta.annotation.Nullable
@@ -404,13 +404,13 @@ public class StopOverStop {
         this.reisezentrumOpeningHours = reisezentrumOpeningHours;
     }
 
-    public StopOverStop stops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> stops) {
+    public StopOverStop stops(@jakarta.annotation.Nullable List<StopsIdResponse> stops) {
 
         this.stops = stops;
         return this;
     }
 
-    public StopOverStop addStopsItem(StopsIdGet2XXResponse stopsItem) {
+    public StopOverStop addStopsItem(StopsIdResponse stopsItem) {
         if (this.stops == null) {
             this.stops = new ArrayList<>();
         }
@@ -427,13 +427,13 @@ public class StopOverStop {
     @JsonProperty(JSON_PROPERTY_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-    public List<StopsIdGet2XXResponse> getStops() {
+    public List<StopsIdResponse> getStops() {
         return stops;
     }
 
     @JsonProperty(JSON_PROPERTY_STOPS)
     @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-    public void setStops(@jakarta.annotation.Nullable List<StopsIdGet2XXResponse> stops) {
+    public void setStops(@jakarta.annotation.Nullable List<StopsIdResponse> stops) {
         this.stops = stops;
     }
 

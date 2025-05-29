@@ -23,60 +23,61 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * StopsIdDeparturesGet2XXResponse
+ * StopsIdArrivalsGet2XXResponse
  */
 @JsonPropertyOrder({
-        StopsIdDeparturesGet2XXResponse.JSON_PROPERTY_DEPARTURES,
-        StopsIdDeparturesGet2XXResponse.JSON_PROPERTY_REALTIME_DATA_UPDATED_AT
+        StopsIdArrivalsResponse.JSON_PROPERTY_ARRIVALS,
+        StopsIdArrivalsResponse.JSON_PROPERTY_REALTIME_DATA_UPDATED_AT
 })
-@JsonTypeName("_stops__id__departures_get_2XX_response")
+@JsonTypeName("_stops__id__arrivals_get_2XX_response")
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-04-11T16:58:48.518685525+02:00[Europe/Berlin]", comments = "Generator version: 7.12.0")
-public class StopsIdDeparturesGet2XXResponse {
-    public static final String JSON_PROPERTY_DEPARTURES = "departures";
+public class StopsIdArrivalsResponse implements CachedAwareResponse {
+    public static final String JSON_PROPERTY_ARRIVALS = "arrivals";
     public static final String JSON_PROPERTY_REALTIME_DATA_UPDATED_AT = "realtimeDataUpdatedAt";
     @jakarta.annotation.Nonnull
-    private List<Alternative> departures = new ArrayList<>();
+    private List<Alternative> arrivals = new ArrayList<>();
     @jakarta.annotation.Nullable
     private Integer realtimeDataUpdatedAt;
+    private boolean fromCache = false;
 
-    public StopsIdDeparturesGet2XXResponse() {
+    public StopsIdArrivalsResponse() {
     }
 
-    public StopsIdDeparturesGet2XXResponse departures(@jakarta.annotation.Nonnull List<Alternative> departures) {
+    public StopsIdArrivalsResponse arrivals(@jakarta.annotation.Nonnull List<Alternative> arrivals) {
 
-        this.departures = departures;
+        this.arrivals = arrivals;
         return this;
     }
 
-    public StopsIdDeparturesGet2XXResponse addDeparturesItem(Alternative departuresItem) {
-        if (this.departures == null) {
-            this.departures = new ArrayList<>();
+    public StopsIdArrivalsResponse addArrivalsItem(Alternative arrivalsItem) {
+        if (this.arrivals == null) {
+            this.arrivals = new ArrayList<>();
         }
-        this.departures.add(departuresItem);
+        this.arrivals.add(arrivalsItem);
         return this;
     }
 
     /**
-     * Get departures
+     * Get arrivals
      *
-     * @return departures
+     * @return arrivals
      */
     @jakarta.annotation.Nonnull
-    @JsonProperty(JSON_PROPERTY_DEPARTURES)
+    @JsonProperty(JSON_PROPERTY_ARRIVALS)
     @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-    public List<Alternative> getDepartures() {
-        return departures;
+    public List<Alternative> getArrivals() {
+        return arrivals;
     }
 
 
-    @JsonProperty(JSON_PROPERTY_DEPARTURES)
+    @JsonProperty(JSON_PROPERTY_ARRIVALS)
     @JsonInclude(value = JsonInclude.Include.ALWAYS)
-    public void setDepartures(@jakarta.annotation.Nonnull List<Alternative> departures) {
-        this.departures = departures;
+    public void setArrivals(@jakarta.annotation.Nonnull List<Alternative> arrivals) {
+        this.arrivals = arrivals;
     }
 
-    public StopsIdDeparturesGet2XXResponse realtimeDataUpdatedAt(@jakarta.annotation.Nullable Integer realtimeDataUpdatedAt) {
+    public StopsIdArrivalsResponse realtimeDataUpdatedAt(@jakarta.annotation.Nullable Integer realtimeDataUpdatedAt) {
 
         this.realtimeDataUpdatedAt = realtimeDataUpdatedAt;
         return this;
@@ -102,6 +103,15 @@ public class StopsIdDeparturesGet2XXResponse {
         this.realtimeDataUpdatedAt = realtimeDataUpdatedAt;
     }
 
+    @Override
+    public void setFromCache(boolean fromCache) {
+        this.fromCache = fromCache;
+    }
+
+    @Override
+    public boolean isFromCache() {
+        return fromCache;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -111,20 +121,20 @@ public class StopsIdDeparturesGet2XXResponse {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        StopsIdDeparturesGet2XXResponse stopsIdDeparturesGet2XXResponse = (StopsIdDeparturesGet2XXResponse) o;
-        return Objects.equals(this.departures, stopsIdDeparturesGet2XXResponse.departures) &&
-                Objects.equals(this.realtimeDataUpdatedAt, stopsIdDeparturesGet2XXResponse.realtimeDataUpdatedAt);
+        StopsIdArrivalsResponse stopsIdArrivalsResponse = (StopsIdArrivalsResponse) o;
+        return Objects.equals(this.arrivals, stopsIdArrivalsResponse.arrivals) &&
+                Objects.equals(this.realtimeDataUpdatedAt, stopsIdArrivalsResponse.realtimeDataUpdatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(departures, realtimeDataUpdatedAt);
+        return Objects.hash(arrivals, realtimeDataUpdatedAt);
     }
 
     @Override
     public String toString() {
-        String sb = "class StopsIdDeparturesGet2XXResponse {\n" +
-                "    departures: " + toIndentedString(departures) + "\n" +
+        String sb = "class StopsIdArrivalsGet2XXResponse {\n" +
+                "    arrivals: " + toIndentedString(arrivals) + "\n" +
                 "    realtimeDataUpdatedAt: " + toIndentedString(realtimeDataUpdatedAt) + "\n" +
                 "}";
         return sb;
