@@ -11,12 +11,12 @@ public class LocationSearchRequestTest {
     @Test
     public void testConstructorAndGetters() {
         String query = "Berlin Hbf";
-        LocationSearchRequest request = new LocationSearchRequest(query);
+        LocationSearchRequest request = new LocationSearchRequest(query, 5);
         assertEquals("Constructor sollte query korrekt setzen", query, request.getQuery());
 
         // Überprüfe Standardwerte nach Konstruktion
         assertFalse("fuzzy sollte standardmäßig false sein", request.isFuzzy());
-        assertEquals("maxResults sollte standardmäßig 0 sein", 0, request.getMaxResults());
+        assertEquals("maxResults sollte 5 sein", 5, request.getMaxResults());
         assertFalse("stops sollte standardmäßig false sein", request.isStops());
         assertFalse("addresses sollte standardmäßig false sein", request.isAddresses());
         assertFalse("poi sollte standardmäßig false sein", request.isPoi());
@@ -26,7 +26,7 @@ public class LocationSearchRequestTest {
 
     @Test
     public void testSettersAndGetters() {
-        LocationSearchRequest request = new LocationSearchRequest("test-query");
+        LocationSearchRequest request = new LocationSearchRequest("test-query", 5);
 
         // Test für query
         request.setQuery("new-query");
@@ -59,7 +59,7 @@ public class LocationSearchRequestTest {
 
     @Test
     public void testNullValues() {
-        LocationSearchRequest request = new LocationSearchRequest("test");
+        LocationSearchRequest request = new LocationSearchRequest("test", 5);
 
         request.setQuery(null);
         assertNull("query sollte null sein können", request.getQuery());
@@ -70,7 +70,7 @@ public class LocationSearchRequestTest {
 
     @Test
     public void testEdgeCases() {
-        LocationSearchRequest request = new LocationSearchRequest("test");
+        LocationSearchRequest request = new LocationSearchRequest("test", 5);
 
         // Test negative Werte
         request.setMaxResults(-1);
@@ -86,7 +86,7 @@ public class LocationSearchRequestTest {
 
     @Test
     public void testDBVendoRequestImplementation() {
-        LocationSearchRequest request = new LocationSearchRequest("test");
+        LocationSearchRequest request = new LocationSearchRequest("test", 5);
         assertTrue("Sollte DBVendoRequest implementieren", request instanceof DBVendoRequest);
     }
 }
