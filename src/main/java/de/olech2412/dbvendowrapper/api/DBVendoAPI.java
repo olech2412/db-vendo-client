@@ -5,6 +5,9 @@ import de.olech2412.dbvendowrapper.BaseApi;
 import de.olech2412.dbvendowrapper.model.*;
 import de.olech2412.dbvendowrapper.requests.*;
 import de.olech2412.dbvendowrapper.config.CacheConfig;
+import de.olech2412.dbvendowrapper.config.QueueConfig;
+import de.olech2412.dbvendowrapper.config.RetryConfig;
+import de.olech2412.dbvendowrapper.queue.RequestQueue;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -14,10 +17,12 @@ import org.springframework.web.client.RestClientException;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -32,12 +37,27 @@ import com.github.benmanes.caffeine.cache.Caffeine;
  * The caching behavior is controlled by the CacheConfig parameter and can be
  * completely disabled if needed.
  *
+ * The queuing behavior is controlled by the QueueConfig parameter and can be
+ * enabled to limit and spread requests over time.
+ *
+ * The retry behavior is controlled by the RetryConfig parameter and can be
+ * enabled to retry failed requests based on specific conditions.
+ *
  * @author olech2412
  */
 public class DBVendoAPI extends BaseApi {
 
     /** Configuration object that controls caching behavior */
     private final CacheConfig cacheConfig;
+
+    /** Configuration object that controls queuing behavior */
+    private final QueueConfig queueConfig;
+
+    /** Retry configuration */
+    private final RetryConfig retryConfig;
+
+    /** Request queue instance if queuing is enabled */
+    private final RequestQueue requestQueue;
 
     /** Cache for trip information indexed by TripByIdRequest */
     private final Cache<TripByIdRequest, TripsIdResponse> tripCache;
@@ -64,82 +84,111 @@ public class DBVendoAPI extends BaseApi {
     private final Cache<StopByIdRequest, StopsIdResponse> stopCache;
 
     /**
-     * Default constructor that creates a new DBVendoAPI instance with default ApiClient and CacheConfig.
+     * Default constructor that creates a new DBVendoAPI instance with default ApiClient, CacheConfig, and QueueConfig.
      */
     public DBVendoAPI() {
         this(new ApiClient());
     }
 
     /**
-     * Constructor that creates a new DBVendoAPI instance with the specified ApiClient and default CacheConfig.
+     * Constructor that creates a new DBVendoAPI instance with the specified ApiClient and default CacheConfig and QueueConfig.
      *
      * @param apiClient the ApiClient to use for API calls
      */
     public DBVendoAPI(ApiClient apiClient) {
-        this(apiClient, CacheConfig.DEFAULT);
+        this(apiClient, CacheConfig.DEFAULT, QueueConfig.DEFAULT);
     }
 
     /**
-     * Constructor that creates a new DBVendoAPI instance with the specified ApiClient and CacheConfig.
+     * Constructor that creates a new DBVendoAPI instance with the specified ApiClient and CacheConfig, and default QueueConfig.
      *
      * @param apiClient the ApiClient to use for API calls
      * @param cacheConfig the cache configuration to control caching behavior
      */
     public DBVendoAPI(ApiClient apiClient, CacheConfig cacheConfig) {
+        this(apiClient, cacheConfig, QueueConfig.DEFAULT);
+    }
+
+    /**
+     * Constructor that creates a new DBVendoAPI instance with the specified ApiClient, CacheConfig, and QueueConfig.
+     *
+     * @param apiClient the ApiClient to use for API calls
+     * @param cacheConfig the cache configuration to control caching behavior
+     * @param queueConfig the queue configuration to control queuing behavior
+     */
+    public DBVendoAPI(ApiClient apiClient, CacheConfig cacheConfig, QueueConfig queueConfig) {
+        this(apiClient, cacheConfig, queueConfig, RetryConfig.DEFAULT);
+    }
+
+    /**
+     * Constructor that creates a new DBVendoAPI instance with the specified ApiClient, CacheConfig, QueueConfig, and RetryConfig.
+     *
+     * @param apiClient the ApiClient to use for API calls
+     * @param cacheConfig the cache configuration to control caching behavior
+     * @param queueConfig the queue configuration to control queuing behavior
+     * @param retryConfig the retry configuration to control retry behavior
+     */
+    public DBVendoAPI(ApiClient apiClient, CacheConfig cacheConfig, QueueConfig queueConfig, RetryConfig retryConfig) {
         super(apiClient);
         this.cacheConfig = cacheConfig;
+        this.queueConfig = queueConfig;
+        this.retryConfig = retryConfig != null ? retryConfig : RetryConfig.DEFAULT;
 
-        // Initialize caches only if caching is enabled
-        if (cacheConfig.isEnabled()) {
-            // Initialize trip cache with configured settings
-            this.tripCache = Caffeine.newBuilder()
-                    .maximumSize(cacheConfig.getMaximumSize())
-                    .expireAfterWrite(cacheConfig.getExpireAfterWrite())
-                    .build();
-
-            // Initialize journey search cache with configured settings
-            this.journeyCache = Caffeine.newBuilder()
-                    .maximumSize(cacheConfig.getMaximumSize())
-                    .expireAfterWrite(cacheConfig.getExpireAfterWrite())
-                    .build();
-
-            // Initialize journey refresh cache with configured settings
-            this.journeyRefreshCache = Caffeine.newBuilder()
-                    .maximumSize(cacheConfig.getMaximumSize())
-                    .expireAfterWrite(cacheConfig.getExpireAfterWrite())
-                    .build();
-
-            // Initialize location search cache with configured settings
-            this.locationSearchCache = Caffeine.newBuilder()
-                    .maximumSize(cacheConfig.getMaximumSize())
-                    .expireAfterWrite(cacheConfig.getExpireAfterWrite())
-                    .build();
-
-            // Initialize nearby locations cache with configured settings
-            this.locationsNearbyCache = Caffeine.newBuilder()
-                    .maximumSize(cacheConfig.getMaximumSize())
-                    .expireAfterWrite(cacheConfig.getExpireAfterWrite())
-                    .build();
-
-            // Initialize arrivals cache with configured settings
-            this.arrivalsCache = Caffeine.newBuilder()
-                    .maximumSize(cacheConfig.getMaximumSize())
-                    .expireAfterWrite(cacheConfig.getExpireAfterWrite())
-                    .build();
-
-            // Initialize departures cache with configured settings
-            this.departuresCache = Caffeine.newBuilder()
-                    .maximumSize(cacheConfig.getMaximumSize())
-                    .expireAfterWrite(cacheConfig.getExpireAfterWrite())
-                    .build();
-
-            // Initialize stop cache with configured settings
-            this.stopCache = Caffeine.newBuilder()
-                    .maximumSize(cacheConfig.getMaximumSize())
-                    .expireAfterWrite(cacheConfig.getExpireAfterWrite())
-                    .build();
+        if (queueConfig != null && queueConfig.isEnabled()) {
+            this.requestQueue = new RequestQueue(queueConfig);
         } else {
-            // Set all caches to null when caching is disabled
+            this.requestQueue = null;
+        }
+
+        // Initialize caches nur, wenn caching global aktiviert ist
+        if (cacheConfig.isEnabled()) {
+            CacheConfig.EndpointCacheConfig stopsCfg = cacheConfig.getStopsConfig();
+            this.stopCache = stopsCfg.isEnabled() ?
+                    Caffeine.newBuilder()
+                            .maximumSize(stopsCfg.getMaximumSize())
+                            .expireAfterWrite(stopsCfg.getExpireAfterWrite())
+                            .build() : null;
+            CacheConfig.EndpointCacheConfig tripsCfg = cacheConfig.getTripsConfig();
+            this.tripCache = tripsCfg.isEnabled() ?
+                    Caffeine.newBuilder()
+                            .maximumSize(tripsCfg.getMaximumSize())
+                            .expireAfterWrite(tripsCfg.getExpireAfterWrite())
+                            .build() : null;
+            CacheConfig.EndpointCacheConfig journeysCfg = cacheConfig.getJourneysConfig();
+            this.journeyCache = journeysCfg.isEnabled() ?
+                    Caffeine.newBuilder()
+                            .maximumSize(journeysCfg.getMaximumSize())
+                            .expireAfterWrite(journeysCfg.getExpireAfterWrite())
+                            .build() : null;
+            this.journeyRefreshCache = journeysCfg.isEnabled() ?
+                    Caffeine.newBuilder()
+                            .maximumSize(journeysCfg.getMaximumSize())
+                            .expireAfterWrite(journeysCfg.getExpireAfterWrite())
+                            .build() : null;
+            CacheConfig.EndpointCacheConfig locationsCfg = cacheConfig.getLocationsConfig();
+            this.locationSearchCache = locationsCfg.isEnabled() ?
+                    Caffeine.newBuilder()
+                            .maximumSize(locationsCfg.getMaximumSize())
+                            .expireAfterWrite(locationsCfg.getExpireAfterWrite())
+                            .build() : null;
+            this.locationsNearbyCache = locationsCfg.isEnabled() ?
+                    Caffeine.newBuilder()
+                            .maximumSize(locationsCfg.getMaximumSize())
+                            .expireAfterWrite(locationsCfg.getExpireAfterWrite())
+                            .build() : null;
+            CacheConfig.EndpointCacheConfig arrivalsCfg = cacheConfig.getArrivalsConfig();
+            this.arrivalsCache = arrivalsCfg.isEnabled() ?
+                    Caffeine.newBuilder()
+                            .maximumSize(arrivalsCfg.getMaximumSize())
+                            .expireAfterWrite(arrivalsCfg.getExpireAfterWrite())
+                            .build() : null;
+            CacheConfig.EndpointCacheConfig departuresCfg = cacheConfig.getDeparturesConfig();
+            this.departuresCache = departuresCfg.isEnabled() ?
+                    Caffeine.newBuilder()
+                            .maximumSize(departuresCfg.getMaximumSize())
+                            .expireAfterWrite(departuresCfg.getExpireAfterWrite())
+                            .build() : null;
+        } else {
             this.tripCache = null;
             this.journeyCache = null;
             this.journeyRefreshCache = null;
@@ -152,7 +201,7 @@ public class DBVendoAPI extends BaseApi {
     }
 
     /**
-     * Leert alle internen Caches (für Integrationstests).
+     * Clears all internal caches (for integration tests).
      */
     public void clearAllCaches() {
         if (tripCache != null) tripCache.invalidateAll();
@@ -163,6 +212,228 @@ public class DBVendoAPI extends BaseApi {
         if (arrivalsCache != null) arrivalsCache.invalidateAll();
         if (departuresCache != null) departuresCache.invalidateAll();
         if (stopCache != null) stopCache.invalidateAll();
+    }
+
+    /**
+     * Gibt die geplanten Ausführungszeiten der Requests in der Queue zurück (Europe/Berlin).
+     * @return Liste der geplanten Ausführungszeiten, oder leer wenn Queue deaktiviert
+     */
+    public List<ZonedDateTime> getScheduledRequestTimes() {
+        if (requestQueue == null) return List.of();
+        return requestQueue.getScheduledTimes();
+    }
+
+    /**
+     * Gibt einen Snapshot der aktuellen Queue zurück (read-only, geplante Zeiten in Europe/Berlin).
+     * @return Liste der geplanten Requests, oder leer wenn Queue deaktiviert
+     */
+    public List<RequestQueue.ScheduledRequest<?>> getQueueSnapshot() {
+        if (requestQueue == null) return List.of();
+        return requestQueue.getQueueSnapshot();
+    }
+
+    /**
+     * Returns the current size of the queue.
+     * @return queue size, or 0 if queuing is disabled
+     */
+    public int getQueueSize() {
+        if (requestQueue == null) return 0;
+        return requestQueue.getQueueSize();
+    }
+
+    /**
+     * Fügt eine Liste von DBVendoRequests der Queue hinzu und gibt die zugehörigen Futures zurück.
+     * Die Requests werden nach den Regeln der QueueConfig abgearbeitet.
+     */
+    public List<CompletableFuture<?>> enqueueRequests(List<DBVendoRequest> requests) {
+        if (requestQueue == null || requests == null) return List.of();
+        List<java.util.function.Supplier<Object>> suppliers = new java.util.ArrayList<>();
+        for (DBVendoRequest req : requests) {
+            suppliers.add(() -> this.executeRequest(req));
+        }
+        // Nutze die Batch-Logik der RequestQueue
+        return new java.util.ArrayList<>(requestQueue.enqueueRequests(suppliers));
+    }
+
+    /**
+     * Führt einen beliebigen DBVendoRequest aus (Dispatch auf die passende API-Methode).
+     * Hier können weitere Request-Typen ergänzt werden.
+     */
+    private Object executeRequest(DBVendoRequest req) {
+        // WICHTIG: Hier KEINEN Methodenaufruf verwenden, der wieder queueOrDirect nutzt!
+        if (req instanceof TripByIdRequest) {
+            TripByIdRequest r = (TripByIdRequest) req;
+            TripsIdResponse response = tripsIdGetWithHttpInfo(
+                r.getTripId(),
+                r.isStopOvers(),
+                r.isRemarks(),
+                r.isPolyline(),
+                r.getLanguage()
+            ).getBody();
+            return getCachedOrFetch(tripCache, r, response);
+        } else if (req instanceof JourneyByRefreshTokenRequest) {
+            JourneyByRefreshTokenRequest r = (JourneyByRefreshTokenRequest) req;
+            JourneysRefreshResponse response = journeysRefGetWithHttpInfo(
+                r.getRefreshToken(),
+                r.isStopOvers(),
+                r.isTickets(),
+                r.isPolylines(),
+                r.isSubStops(),
+                r.isEntrances(),
+                r.isRemarks(),
+                r.isScheduledDays(),
+                r.isNotOnlyFastRoutes(),
+                r.isBestPrice(),
+                r.getLanguage()
+            ).getBody();
+            return getCachedOrFetch(journeyRefreshCache, r, response);
+        } else if (req instanceof JourneySearchRequest) {
+            JourneySearchRequest r = (JourneySearchRequest) req;
+            JourneysResponse response = journeysGetWithHttpInfo(
+                r.getFrom(),
+                r.getFromId(),
+                r.getFromAddress(),
+                r.getFromLatitude(),
+                r.getFromLongitude(),
+                r.getTo(),
+                r.getToId(),
+                r.getToAddress(),
+                r.getToLatitude(),
+                r.getToLongitude(),
+                r.getDeparture(),
+                r.getArrival(),
+                r.getEarlierThen(),
+                r.getLaterThen(),
+                r.getMaxResults(),
+                r.isStopOvers(),
+                r.getMaxTransfers(),
+                r.getMinimumTransferTime(),
+                r.getAccessibility(),
+                r.isBikeFriendly(),
+                r.isStartWithWalking(),
+                r.getWalkingSpeed(),
+                r.isTickets(),
+                r.isPolylines(),
+                r.isSubStops(),
+                r.isEntrances(),
+                r.isRemarks(),
+                r.isScheduledDays(),
+                r.isNotOnlyFastRoutes(),
+                r.isBestPrice(),
+                r.getLanguage(),
+                r.getLoyaltyCard(),
+                r.isFirstClass(),
+                r.getAge(),
+                r.getProfileSpecificProducts()
+            ).getBody();
+            return getCachedOrFetch(journeyCache, r, response);
+        } else if (req instanceof LocationSearchRequest) {
+            LocationSearchRequest r = (LocationSearchRequest) req;
+            List<StopsIdResponse> response = locationsGetWithHttpInfo(
+                r.getQuery(),
+                r.isFuzzy(),
+                r.getMaxResults(),
+                r.isStops(),
+                r.isAddresses(),
+                r.isPoi(),
+                r.isLinesOfStops(),
+                r.getLanguage()
+            ).getBody();
+            return getCachedOrFetch(locationSearchCache, r, response);
+        } else if (req instanceof LocationsNearbyRequest) {
+            LocationsNearbyRequest r = (LocationsNearbyRequest) req;
+            List<StopsIdResponse> response = locationsNearbyGetWithHttpInfo(
+                r.getLocation(),
+                r.getMaxResults(),
+                r.getDistance(),
+                r.isStops(),
+                r.isPoi(),
+                r.isLinesOfStops(),
+                r.getLanguage()
+            ).getBody();
+            return getCachedOrFetch(locationsNearbyCache, r, response);
+        } else if (req instanceof ArrivalsByStopIdRequest) {
+            ArrivalsByStopIdRequest r = (ArrivalsByStopIdRequest) req;
+            StopsIdArrivalsResponse response = stopsIdArrivalsGetWithHttpInfo(
+                r.getStopId(),
+                r.getArrivalTime(),
+                r.getDirection(),
+                r.getDuration(),
+                r.getMaxResults(),
+                r.isLinesOfStops(),
+                r.isRemarks(),
+                r.getLanguage(),
+                r.getProfileSpecificProducts()
+            ).getBody();
+            return getCachedOrFetch(arrivalsCache, r, response);
+        } else if (req instanceof DeparturesByStopIdRequest) {
+            DeparturesByStopIdRequest r = (DeparturesByStopIdRequest) req;
+            StopsIdDeparturesResponse response = stopsIdDeparturesGetWithHttpInfo(
+                r.getStopId(),
+                r.getDepartureTime(),
+                r.getDirection(),
+                r.getDuration(),
+                r.getMaxResults(),
+                r.isLinesOfStops(),
+                r.isRemarks(),
+                r.getLanguage(),
+                r.getProfileSpecificProducts()
+            ).getBody();
+            return getCachedOrFetch(departuresCache, r, response);
+        } else if (req instanceof StopByIdRequest) {
+            StopByIdRequest r = (StopByIdRequest) req;
+            StopsIdResponse response = stopsIdGetWithHttpInfo(
+                r.getStopId(),
+                r.isLinesOfStops(),
+                r.getLanguage()
+            ).getBody();
+            return getCachedOrFetch(stopCache, r, response);
+        }
+        throw new IllegalArgumentException("Unbekannter Request-Typ: " + req.getClass());
+    }
+
+    /**
+     * Helper method to handle queuing or direct execution for a supplier.
+     */
+    private <T> T queueOrDirect(java.util.function.Supplier<T> supplier) {
+        if (requestQueue != null) {
+            CompletableFuture<T> fut = requestQueue.submit(() -> executeWithRetry(supplier));
+            try {
+                return fut.get();
+            } catch (Exception e) {
+                throw new RuntimeException("Error executing request from queue", e);
+            }
+        } else {
+            return executeWithRetry(supplier);
+        }
+    }
+
+    /**
+     * Executes a supplier with retry logic based on the RetryConfig.
+     */
+    private <T> T executeWithRetry(java.util.function.Supplier<T> supplier) {
+        int attempts = 0;
+        Throwable lastError = null;
+        while (attempts <= retryConfig.getMaxRetries()) {
+            try {
+                return supplier.get();
+            } catch (Throwable t) {
+                if (!retryConfig.shouldRetry(t) || attempts == retryConfig.getMaxRetries()) {
+                    lastError = t;
+                    break;
+                }
+                attempts++;
+                try {
+                    Thread.sleep(retryConfig.getRetryInterval().toMillis());
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        }
+        // Logging
+        System.err.println("Request failed after " + (attempts + 1) + " attempts: " + (lastError != null ? lastError.getMessage() : "unknown error"));
+        throw new RuntimeException("Request failed after " + (attempts + 1) + " attempts", lastError);
     }
 
     /**
@@ -202,7 +473,7 @@ public class DBVendoAPI extends BaseApi {
     }
 
     /**
-     * Setzt das fromCache-Flag für einzelne Responses oder Listen von Responses.
+     * Sets the fromCache flag for single responses or lists of responses.
      */
     private void setFromCacheFlag(Object obj, boolean fromCache) {
         if (obj instanceof CachedAwareResponse) {
@@ -228,17 +499,16 @@ public class DBVendoAPI extends BaseApi {
      * @throws RestClientException if the API call fails
      */
     public TripsIdResponse tripsIdGet(TripByIdRequest tripByIdRequest) throws RestClientException {
-        // Make the actual API call with all parameters from the request
-        TripsIdResponse response = tripsIdGetWithHttpInfo(
-                tripByIdRequest.getTripId(),
-                tripByIdRequest.isStopOvers(),
-                tripByIdRequest.isRemarks(),
-                tripByIdRequest.isPolyline(),
-                tripByIdRequest.getLanguage()
-        ).getBody();
-
-        // Return cached result or cache the new result
-        return getCachedOrFetch(tripCache, tripByIdRequest, response);
+        return queueOrDirect(() -> {
+            TripsIdResponse response = tripsIdGetWithHttpInfo(
+                    tripByIdRequest.getTripId(),
+                    tripByIdRequest.isStopOvers(),
+                    tripByIdRequest.isRemarks(),
+                    tripByIdRequest.isPolyline(),
+                    tripByIdRequest.getLanguage()
+            ).getBody();
+            return getCachedOrFetch(tripCache, tripByIdRequest, response);
+        });
     }
 
     /**
@@ -253,23 +523,22 @@ public class DBVendoAPI extends BaseApi {
      * @throws RestClientException if the API call fails
      */
     public JourneysRefreshResponse journeysRefGet(JourneyByRefreshTokenRequest request) throws RestClientException {
-        // Make the actual API call with all parameters from the request
-        JourneysRefreshResponse response = journeysRefGetWithHttpInfo(
-                request.getRefreshToken(),
-                request.isStopOvers(),
-                request.isTickets(),
-                request.isPolylines(),
-                request.isSubStops(),
-                request.isEntrances(),
-                request.isRemarks(),
-                request.isScheduledDays(),
-                request.isNotOnlyFastRoutes(),
-                request.isBestPrice(),
-                request.getLanguage()
-        ).getBody();
-
-        // Return cached result or cache the new result
-        return getCachedOrFetch(journeyRefreshCache, request, response);
+        return queueOrDirect(() -> {
+            JourneysRefreshResponse response = journeysRefGetWithHttpInfo(
+                    request.getRefreshToken(),
+                    request.isStopOvers(),
+                    request.isTickets(),
+                    request.isPolylines(),
+                    request.isSubStops(),
+                    request.isEntrances(),
+                    request.isRemarks(),
+                    request.isScheduledDays(),
+                    request.isNotOnlyFastRoutes(),
+                    request.isBestPrice(),
+                    request.getLanguage()
+            ).getBody();
+            return getCachedOrFetch(journeyRefreshCache, request, response);
+        });
     }
 
     /**
@@ -284,47 +553,46 @@ public class DBVendoAPI extends BaseApi {
      * @throws RestClientException if the API call fails
      */
     public JourneysResponse journeysGet(JourneySearchRequest journeySearchRequest) throws RestClientException {
-        // Make the actual API call with all parameters from the request
-        JourneysResponse response = journeysGetWithHttpInfo(
-                journeySearchRequest.getFrom(),
-                journeySearchRequest.getFromId(),
-                journeySearchRequest.getFromAddress(),
-                journeySearchRequest.getFromLatitude(),
-                journeySearchRequest.getFromLongitude(),
-                journeySearchRequest.getTo(),
-                journeySearchRequest.getToId(),
-                journeySearchRequest.getToAddress(),
-                journeySearchRequest.getToLatitude(),
-                journeySearchRequest.getToLongitude(),
-                journeySearchRequest.getDeparture(),
-                journeySearchRequest.getArrival(),
-                journeySearchRequest.getEarlierThen(),
-                journeySearchRequest.getLaterThen(),
-                journeySearchRequest.getMaxResults(),
-                journeySearchRequest.isStopOvers(),
-                journeySearchRequest.getMaxTransfers(),
-                journeySearchRequest.getMinimumTransferTime(),
-                journeySearchRequest.getAccessibility(),
-                journeySearchRequest.isBikeFriendly(),
-                journeySearchRequest.isStartWithWalking(),
-                journeySearchRequest.getWalkingSpeed(),
-                journeySearchRequest.isTickets(),
-                journeySearchRequest.isPolylines(),
-                journeySearchRequest.isSubStops(),
-                journeySearchRequest.isEntrances(),
-                journeySearchRequest.isRemarks(),
-                journeySearchRequest.isScheduledDays(),
-                journeySearchRequest.isNotOnlyFastRoutes(),
-                journeySearchRequest.isBestPrice(),
-                journeySearchRequest.getLanguage(),
-                journeySearchRequest.getLoyaltyCard(),
-                journeySearchRequest.isFirstClass(),
-                journeySearchRequest.getAge(),
-                journeySearchRequest.getProfileSpecificProducts()
-        ).getBody();
-
-        // Return cached result or cache the new result
-        return getCachedOrFetch(journeyCache, journeySearchRequest, response);
+        return queueOrDirect(() -> {
+            JourneysResponse response = journeysGetWithHttpInfo(
+                    journeySearchRequest.getFrom(),
+                    journeySearchRequest.getFromId(),
+                    journeySearchRequest.getFromAddress(),
+                    journeySearchRequest.getFromLatitude(),
+                    journeySearchRequest.getFromLongitude(),
+                    journeySearchRequest.getTo(),
+                    journeySearchRequest.getToId(),
+                    journeySearchRequest.getToAddress(),
+                    journeySearchRequest.getToLatitude(),
+                    journeySearchRequest.getToLongitude(),
+                    journeySearchRequest.getDeparture(),
+                    journeySearchRequest.getArrival(),
+                    journeySearchRequest.getEarlierThen(),
+                    journeySearchRequest.getLaterThen(),
+                    journeySearchRequest.getMaxResults(),
+                    journeySearchRequest.isStopOvers(),
+                    journeySearchRequest.getMaxTransfers(),
+                    journeySearchRequest.getMinimumTransferTime(),
+                    journeySearchRequest.getAccessibility(),
+                    journeySearchRequest.isBikeFriendly(),
+                    journeySearchRequest.isStartWithWalking(),
+                    journeySearchRequest.getWalkingSpeed(),
+                    journeySearchRequest.isTickets(),
+                    journeySearchRequest.isPolylines(),
+                    journeySearchRequest.isSubStops(),
+                    journeySearchRequest.isEntrances(),
+                    journeySearchRequest.isRemarks(),
+                    journeySearchRequest.isScheduledDays(),
+                    journeySearchRequest.isNotOnlyFastRoutes(),
+                    journeySearchRequest.isBestPrice(),
+                    journeySearchRequest.getLanguage(),
+                    journeySearchRequest.getLoyaltyCard(),
+                    journeySearchRequest.isFirstClass(),
+                    journeySearchRequest.getAge(),
+                    journeySearchRequest.getProfileSpecificProducts()
+            ).getBody();
+            return getCachedOrFetch(journeyCache, journeySearchRequest, response);
+        });
     }
 
     /**
@@ -339,20 +607,19 @@ public class DBVendoAPI extends BaseApi {
      * @throws RestClientException if the API call fails
      */
     public List<StopsIdResponse> locationsGet(LocationSearchRequest locationSearchRequest) throws RestClientException {
-        // Make the actual API call with all parameters from the request
-        List<StopsIdResponse> response = locationsGetWithHttpInfo(
-                locationSearchRequest.getQuery(),
-                locationSearchRequest.isFuzzy(),
-                locationSearchRequest.getMaxResults(),
-                locationSearchRequest.isStops(),
-                locationSearchRequest.isAddresses(),
-                locationSearchRequest.isPoi(),
-                locationSearchRequest.isLinesOfStops(),
-                locationSearchRequest.getLanguage()
-        ).getBody();
-
-        // Return cached result or cache the new result
-        return getCachedOrFetch(locationSearchCache, locationSearchRequest, response);
+        return queueOrDirect(() -> {
+            List<StopsIdResponse> response = locationsGetWithHttpInfo(
+                    locationSearchRequest.getQuery(),
+                    locationSearchRequest.isFuzzy(),
+                    locationSearchRequest.getMaxResults(),
+                    locationSearchRequest.isStops(),
+                    locationSearchRequest.isAddresses(),
+                    locationSearchRequest.isPoi(),
+                    locationSearchRequest.isLinesOfStops(),
+                    locationSearchRequest.getLanguage()
+            ).getBody();
+            return getCachedOrFetch(locationSearchCache, locationSearchRequest, response);
+        });
     }
 
     /**
@@ -367,19 +634,18 @@ public class DBVendoAPI extends BaseApi {
      * @throws RestClientException if the API call fails
      */
     public List<StopsIdResponse> locationsNearbyGet(LocationsNearbyRequest locationsNearbyRequest) throws RestClientException {
-        // Make the actual API call with all parameters from the request
-        List<StopsIdResponse> response = locationsNearbyGetWithHttpInfo(
-                locationsNearbyRequest.getLocation(),
-                locationsNearbyRequest.getMaxResults(),
-                locationsNearbyRequest.getDistance(),
-                locationsNearbyRequest.isStops(),
-                locationsNearbyRequest.isPoi(),
-                locationsNearbyRequest.isLinesOfStops(),
-                locationsNearbyRequest.getLanguage()
-        ).getBody();
-
-        // Return cached result or cache the new result
-        return getCachedOrFetch(locationsNearbyCache, locationsNearbyRequest, response);
+        return queueOrDirect(() -> {
+            List<StopsIdResponse> response = locationsNearbyGetWithHttpInfo(
+                    locationsNearbyRequest.getLocation(),
+                    locationsNearbyRequest.getMaxResults(),
+                    locationsNearbyRequest.getDistance(),
+                    locationsNearbyRequest.isStops(),
+                    locationsNearbyRequest.isPoi(),
+                    locationsNearbyRequest.isLinesOfStops(),
+                    locationsNearbyRequest.getLanguage()
+            ).getBody();
+            return getCachedOrFetch(locationsNearbyCache, locationsNearbyRequest, response);
+        });
     }
 
     /**
@@ -394,21 +660,20 @@ public class DBVendoAPI extends BaseApi {
      * @throws RestClientException if the API call fails
      */
     public StopsIdArrivalsResponse stopsIdArrivalsGet(ArrivalsByStopIdRequest arrivalsByStopIdRequest) throws RestClientException {
-        // Make the actual API call with all parameters from the request
-        StopsIdArrivalsResponse response = stopsIdArrivalsGetWithHttpInfo(
-                arrivalsByStopIdRequest.getStopId(),
-                arrivalsByStopIdRequest.getArrivalTime(),
-                arrivalsByStopIdRequest.getDirection(),
-                arrivalsByStopIdRequest.getDuration(),
-                arrivalsByStopIdRequest.getMaxResults(),
-                arrivalsByStopIdRequest.isLinesOfStops(),
-                arrivalsByStopIdRequest.isRemarks(),
-                arrivalsByStopIdRequest.getLanguage(),
-                arrivalsByStopIdRequest.getProfileSpecificProducts()
-        ).getBody();
-
-        // Return cached result or cache the new result
-        return getCachedOrFetch(arrivalsCache, arrivalsByStopIdRequest, response);
+        return queueOrDirect(() -> {
+            StopsIdArrivalsResponse response = stopsIdArrivalsGetWithHttpInfo(
+                    arrivalsByStopIdRequest.getStopId(),
+                    arrivalsByStopIdRequest.getArrivalTime(),
+                    arrivalsByStopIdRequest.getDirection(),
+                    arrivalsByStopIdRequest.getDuration(),
+                    arrivalsByStopIdRequest.getMaxResults(),
+                    arrivalsByStopIdRequest.isLinesOfStops(),
+                    arrivalsByStopIdRequest.isRemarks(),
+                    arrivalsByStopIdRequest.getLanguage(),
+                    arrivalsByStopIdRequest.getProfileSpecificProducts()
+            ).getBody();
+            return getCachedOrFetch(arrivalsCache, arrivalsByStopIdRequest, response);
+        });
     }
 
     /**
@@ -423,21 +688,20 @@ public class DBVendoAPI extends BaseApi {
      * @throws RestClientException if the API call fails
      */
     public StopsIdDeparturesResponse stopsIdDeparturesGet(DeparturesByStopIdRequest departuresByStopIdRequest) throws RestClientException {
-        // Make the actual API call with all parameters from the request
-        StopsIdDeparturesResponse response = stopsIdDeparturesGetWithHttpInfo(
-                departuresByStopIdRequest.getStopId(),
-                departuresByStopIdRequest.getDepartureTime(),
-                departuresByStopIdRequest.getDirection(),
-                departuresByStopIdRequest.getDuration(),
-                departuresByStopIdRequest.getMaxResults(),
-                departuresByStopIdRequest.isLinesOfStops(),
-                departuresByStopIdRequest.isRemarks(),
-                departuresByStopIdRequest.getLanguage(),
-                departuresByStopIdRequest.getProfileSpecificProducts()
-        ).getBody();
-
-        // Return cached result or cache the new result
-        return getCachedOrFetch(departuresCache, departuresByStopIdRequest, response);
+        return queueOrDirect(() -> {
+            StopsIdDeparturesResponse response = stopsIdDeparturesGetWithHttpInfo(
+                    departuresByStopIdRequest.getStopId(),
+                    departuresByStopIdRequest.getDepartureTime(),
+                    departuresByStopIdRequest.getDirection(),
+                    departuresByStopIdRequest.getDuration(),
+                    departuresByStopIdRequest.getMaxResults(),
+                    departuresByStopIdRequest.isLinesOfStops(),
+                    departuresByStopIdRequest.isRemarks(),
+                    departuresByStopIdRequest.getLanguage(),
+                    departuresByStopIdRequest.getProfileSpecificProducts()
+            ).getBody();
+            return getCachedOrFetch(departuresCache, departuresByStopIdRequest, response);
+        });
     }
 
     /**
@@ -452,15 +716,14 @@ public class DBVendoAPI extends BaseApi {
      * @throws RestClientException if the API call fails
      */
     public StopsIdResponse stopsIdGet(StopByIdRequest stopByIdRequest) throws RestClientException {
-        // Make the actual API call with all parameters from the request
-        StopsIdResponse response = stopsIdGetWithHttpInfo(
-                stopByIdRequest.getStopId(),
-                stopByIdRequest.isLinesOfStops(),
-                stopByIdRequest.getLanguage()
-        ).getBody();
-
-        // Return cached result or cache the new result
-        return getCachedOrFetch(stopCache, stopByIdRequest, response);
+        return queueOrDirect(() -> {
+            StopsIdResponse response = stopsIdGetWithHttpInfo(
+                    stopByIdRequest.getStopId(),
+                    stopByIdRequest.isLinesOfStops(),
+                    stopByIdRequest.getLanguage()
+            ).getBody();
+            return getCachedOrFetch(stopCache, stopByIdRequest, response);
+        });
     }
 
     private ResponseEntity<JourneysResponse> journeysGetWithHttpInfo(String from, String fromId, String fromAddress, BigDecimal fromLatitude, BigDecimal fromLongitude, String to, String toId, String toAddress, BigDecimal toLatitude, BigDecimal toLongitude, OffsetDateTime departure, OffsetDateTime arrival, String earlierThan, String laterThan, Integer results, Boolean stopovers, Integer transfers, Integer transferTime, String accessibility, Boolean bike, Boolean startWithWalking, String walkingSpeed, Boolean tickets, Boolean polylines, Boolean subStops, Boolean entrances, Boolean remarks, Boolean scheduledDays, Boolean notOnlyFastRoutes, Boolean bestprice, String language, String loyaltyCard, Boolean firstClass, Integer age, ProfileSpecificProducts products) throws RestClientException {

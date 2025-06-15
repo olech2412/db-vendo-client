@@ -4,6 +4,7 @@ import de.olech2412.dbvendowrapper.ApiClient;
 import de.olech2412.dbvendowrapper.api.DBVendoAPI;
 import de.olech2412.dbvendowrapper.model.*;
 import de.olech2412.dbvendowrapper.requests.*;
+import de.olech2412.dbvendowrapper.config.CacheConfig;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -37,7 +38,12 @@ public class CachingIntegrationTest {
         String baseUrl = String.format("http://%s:%d", dbVendoClient.getHost(), dbVendoClient.getMappedPort(3000));
         ApiClient apiClient = new ApiClient();
         apiClient.setBasePath(baseUrl);
-        dbVendoAPI = new DBVendoAPI(apiClient);
+        // Standardmäßig: Stops 90h cachen, Trips nicht cachen, Rest Default
+        CacheConfig config = CacheConfig.builder()
+                .stopsConfig(new CacheConfig.EndpointCacheConfig(true, 1000, java.time.Duration.ofHours(90)))
+                .tripsConfig(new CacheConfig.EndpointCacheConfig(false, 0, java.time.Duration.ZERO))
+                .build();
+        dbVendoAPI = new DBVendoAPI(apiClient, config);
     }
 
     @Test
@@ -92,7 +98,7 @@ public class CachingIntegrationTest {
 
     @Test
     public void testLocationSearchCaching() {
-        LocationSearchRequest request = new LocationSearchRequest("Berlin");
+        LocationSearchRequest request = new LocationSearchRequest("Berlin", 5);
         request.setMaxResults(5);
 
         // Erster Aufruf
@@ -122,6 +128,27 @@ public class CachingIntegrationTest {
         JourneysResponse result2 = dbVendoAPI.journeysGet(request);
         assertNotNull("Zweiter Aufruf sollte Ergebnis aus Cache liefern", result2);
         assertTrue("Zweiter Aufruf sollte aus dem Cache kommen", result2.isFromCache());
+    }
+
+    @Test
+    public void testTripsNotCached() {
+        // Trip-Cache ist deaktiviert, daher sollte nie aus dem Cache kommen
+        DeparturesByStopIdRequest departuresByStopIdRequest = new DeparturesByStopIdRequest("8011160"); // Berlin Hbf
+        departuresByStopIdRequest.setDepartureTime(OffsetDateTime.now());
+
+        StopsIdDeparturesResponse departuresResponse = dbVendoAPI.stopsIdDeparturesGet(departuresByStopIdRequest);
+
+        assertNotNull(departuresResponse);
+        assertFalse("Abfahrten sollten nicht aus dem Cache kommen", departuresResponse.isFromCache());
+        assertFalse("Abfahrten sollten nicht leer sein", departuresResponse.getDepartures().isEmpty());
+
+        TripByIdRequest request = new TripByIdRequest(departuresResponse.getDepartures().get(0).getTripId());
+        TripsIdResponse result1 = dbVendoAPI.tripsIdGet(request);
+        assertNotNull(result1);
+        assertFalse("Trip sollte nie aus dem Cache kommen, da deaktiviert", result1.isFromCache());
+        TripsIdResponse result2 = dbVendoAPI.tripsIdGet(request);
+        assertNotNull(result2);
+        assertFalse("Trip sollte nie aus dem Cache kommen, da deaktiviert", result2.isFromCache());
     }
 
     @Test

@@ -569,7 +569,6 @@ public class ApiClient extends JavaTimeFormatter {
         }
 
         requestCounter++;
-        System.out.println("Counts: " + requestCounter);
         final BodyBuilder requestBuilder = RequestEntity.method(method, UriComponentsBuilder.fromHttpUrl(basePath).toUriString() + finalUri, uriParams);
         if (accept != null) {
             requestBuilder.accept(accept.toArray(new MediaType[accept.size()]));

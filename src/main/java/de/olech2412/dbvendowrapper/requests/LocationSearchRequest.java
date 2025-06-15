@@ -49,8 +49,9 @@ public class LocationSearchRequest implements DBVendoRequest {
 
     private String language;
 
-    public LocationSearchRequest(String query) {
+    public LocationSearchRequest(String query, int maxResults) {
         this.query = query;
+        this.maxResults = maxResults;
     }
 
     public String getQuery() {
