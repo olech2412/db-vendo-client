@@ -15,7 +15,7 @@
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<swagger-annotations-version>2.2.32</swagger-annotations-version>
+		<swagger-annotations-version>2.2.33</swagger-annotations-version>
 		<spring-version>6.2.8</spring-version>
 		<jackson-version>2.19.0</jackson-version>
 		<maven-plugin-version>1.0.0</maven-plugin-version>
