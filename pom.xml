@@ -17,7 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<swagger-annotations-version>2.2.34</swagger-annotations-version>
 		<spring-version>6.2.9</spring-version>
-  	<jackson-version>2.19.0</jackson-version>
+  	<jackson-version>2.19.2</jackson-version>
 		<maven-plugin-version>1.0.0</maven-plugin-version>
 		<jakarta.version>3.0.0</jakarta.version>
 		<junit-version>4.13.2</junit-version>
