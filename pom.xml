@@ -16,8 +16,8 @@
 		<maven.compiler.target>21</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<swagger-annotations-version>2.2.34</swagger-annotations-version>
-		<spring-version>6.2.8</spring-version>
-		<jackson-version>2.19.0</jackson-version>
+		<spring-version>6.2.9</spring-version>
+  	<jackson-version>2.19.0</jackson-version>
 		<maven-plugin-version>1.0.0</maven-plugin-version>
 		<jakarta.version>3.0.0</jakarta.version>
 		<junit-version>4.13.2</junit-version>
@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
-            <version>3.2.1</version>
+            <version>3.2.2</version>
         </dependency>
 
 		<!-- test dependencies -->
@@ -101,7 +101,7 @@
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>testcontainers</artifactId>
-			<version>1.21.1</version>
+			<version>1.21.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
